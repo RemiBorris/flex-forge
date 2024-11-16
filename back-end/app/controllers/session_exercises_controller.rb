@@ -1,2 +1,0 @@
-class SessionExercisesController < ApplicationController
-end

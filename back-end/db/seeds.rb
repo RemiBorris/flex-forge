@@ -7,84 +7,64 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 
+require 'faker'
 
-# Create a user
-user = User.create!(
-  name: "John Doe",
-  email: "johndoe@example.com",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-# Create a routine for the user
-routine = Routine.create!(
-  name: "Strength Training",
-  user_id: user.id,
-  created_at: Time.now,
-  updated_at: Time.now
-)
-# Create some exercises
-exercise1 = Exercise.create!(
-  name: "Bench Press",
-  muscle_group: "Chest",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-exercise2 = Exercise.create!(
-  name: "Squat",
-  muscle_group: "Legs",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-exercise3 = Exercise.create!(
-  name: "Deadlift",
-  muscle_group: "Back",
-  created_at: Time.now,
-  updated_at: Time.now
-)
-# Create a workout session for the user
-workout_session = WorkoutSession.create!(
-  date: Time.now,
-  user_id: user.id,
-  created_at: Time.now,
-  updated_at: Time.now
-)
-# Add exercises to the workout session through session_exercises
-SessionExercise.create!(
-  workout_session_id: workout_session.id,
-  exercise_id: exercise1.id,
-  weight: 80,          # Weight in lbs
-  reps: 10,            # Repetitions
-  set_number: 1,       # Set number
-  created_at: Time.now,
-  updated_at: Time.now
-)
-SessionExercise.create!(
-  workout_session_id: workout_session.id,
-  exercise_id: exercise1.id,
-  weight: 80,
-  reps: 8,
-  set_number: 2,
-  created_at: Time.now,
-  updated_at: Time.now
-)
-SessionExercise.create!(
-  workout_session_id: workout_session.id,
-  exercise_id: exercise2.id,
-  weight: 100,
-  reps: 10,
-  set_number: 1,
-  created_at: Time.now,
-  updated_at: Time.now
-)
-SessionExercise.create!(
-  workout_session_id: workout_session.id,
-  exercise_id: exercise3.id,
-  weight: 120,
-  reps: 5,
-  set_number: 1,
-  created_at: Time.now,
-  updated_at: Time.now
-)
+# Clear existing data to prevent duplicates
+User.destroy_all
+Workout.destroy_all
+Exercise.destroy_all
+WorkoutExercise.destroy_all
+SetEntry.destroy_all
 
+# Create two users
+users = [
+  User.create!(name: 'Alice Gymfan', email: 'alice@example.com', avatar: 'https://via.placeholder.com/150'),
+  User.create!(name: 'Bob Fitguy', email: 'bob@example.com', avatar: 'https://via.placeholder.com/150')
+]
 
-puts "Seed data successfully!"
+# Create some sample exercises
+exercise_list = [
+  { name: 'Bench Press', category: 'Strength', description: 'Chest exercise', muscle_group: 'Chest' },
+  { name: 'Squat', category: 'Strength', description: 'Leg exercise', muscle_group: 'Legs' },
+  { name: 'Deadlift', category: 'Strength', description: 'Full body exercise', muscle_group: 'Back' },
+  { name: 'Pull-Up', category: 'Strength', description: 'Back exercise', muscle_group: 'Back' },
+  { name: 'Shoulder Press', category: 'Strength', description: 'Shoulder exercise', muscle_group: 'Shoulders' },
+  { name: 'Bicep Curl', category: 'Strength', description: 'Arm exercise', muscle_group: 'Arms' },
+  { name: 'Tricep Dip', category: 'Strength', description: 'Arm exercise', muscle_group: 'Arms' },
+  { name: 'Lunge', category: 'Strength', description: 'Leg exercise', muscle_group: 'Legs' },
+  { name: 'Plank', category: 'Core', description: 'Core exercise', muscle_group: 'Core' }
+]
+
+exercises = exercise_list.map do |exercise|
+  Exercise.create!(exercise)
+end
+
+# Create workouts for each user over 6 weeks (3-4 times per week)
+start_date = 6.weeks.ago.to_date
+
+users.each do |user|
+  workout_dates = (0..41).to_a.sample(21).map { |n| start_date + n.days }.sort
+
+  workout_dates.each do |date|
+    workout = Workout.create!(user: user, date: date, notes: Faker::Quote.matz)
+
+    # Randomly select 3-5 exercises for each workout
+    selected_exercises = exercises.sample(rand(3..5))
+
+    selected_exercises.each do |exercise|
+      workout_exercise = WorkoutExercise.create!(workout: workout, exercise: exercise)
+
+      # Create 3-4 sets for each exercise with randomized reps and weight
+      (1..rand(3..4)).each do |set_number|
+        SetEntry.create!(
+          workout_exercise: workout_exercise,
+          set_number: set_number,
+          reps: rand(6..12),
+          weight: rand(20..100)
+        )
+      end
+    end
+  end
+end
+
+puts "Seed data created successfully!"

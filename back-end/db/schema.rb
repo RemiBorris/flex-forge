@@ -10,54 +10,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_08_000256) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_14_233225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "exercises", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "category"
+    t.text "description"
     t.string "muscle_group"
-  end
-
-  create_table "routines", force: :cascade do |t|
-    t.string "name"
-    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_routines_on_user_id"
   end
 
-  create_table "session_exercises", force: :cascade do |t|
-    t.bigint "workout_session_id", null: false
-    t.bigint "exercise_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "weight"
-    t.integer "reps"
+  create_table "set_entries", force: :cascade do |t|
+    t.bigint "workout_exercise_id", null: false
     t.integer "set_number"
-    t.index ["exercise_id"], name: "index_session_exercises_on_exercise_id"
-    t.index ["workout_session_id"], name: "index_session_exercises_on_workout_session_id"
+    t.integer "reps"
+    t.float "weight"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["workout_exercise_id"], name: "index_set_entries_on_workout_exercise_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
+    t.string "avatar"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "workout_sessions", force: :cascade do |t|
-    t.datetime "date"
+  create_table "workout_exercises", force: :cascade do |t|
+    t.bigint "workout_id", null: false
+    t.bigint "exercise_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exercise_id"], name: "index_workout_exercises_on_exercise_id"
+    t.index ["workout_id"], name: "index_workout_exercises_on_workout_id"
+  end
+
+  create_table "workouts", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.datetime "date"
+    t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_workout_sessions_on_user_id"
+    t.index ["user_id"], name: "index_workouts_on_user_id"
   end
 
-  add_foreign_key "routines", "users"
-  add_foreign_key "session_exercises", "exercises"
-  add_foreign_key "session_exercises", "workout_sessions"
-  add_foreign_key "workout_sessions", "users"
+  add_foreign_key "set_entries", "workout_exercises"
+  add_foreign_key "workout_exercises", "exercises"
+  add_foreign_key "workout_exercises", "workouts"
+  add_foreign_key "workouts", "users"
 end
