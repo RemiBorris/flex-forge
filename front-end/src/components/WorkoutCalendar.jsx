@@ -30,14 +30,19 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
   return (
     <div>
       <button onClick={onNavigateToLanding}>Back to Landing Page</button>
-      {selectedDate ? (
+      {selectedDate && workoutMap[selectedDate.toDateString()] ? (
         <UserWorkouts
           workouts={workoutMap[selectedDate.toDateString()]}
           onBack={() => setSelectedDate(null)}
         />
       ) : (
         <Calendar
-          onClickDay={(date) => setSelectedDate(date)}
+        onClickDay={(date) => {
+          // Only set the selected date if there are workouts for that day
+          if (workoutMap[date.toDateString()]) {
+            setSelectedDate(date);
+          }
+        }}
           tileContent={tileContent}
         />
       )}
