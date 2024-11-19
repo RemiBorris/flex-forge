@@ -5,15 +5,19 @@ import React, { useState } from "react"; // Import useState
 
 function App() {
   const [userId, setUserId] = useState(null); // Manage logged-in state
+  const [username, setUsername] = useState(null)
   const [page, setPage] = useState('login'); // Manage navigation
 
   const handleLogin = (id) => {
+    const storedUsername = localStorage.getItem("username");
+    setUsername(storedUsername); // Save username for landing page welcome
     setUserId(id); // Save userId
     setPage('landing'); // Navigate to Landing Page
   };
 
   const handleLogout = () => {
     localStorage.removeItem("userId"); // Remove user ID from localStorage
+    localStorage.removeItem("username") //remove user's name from localStorage
     setUserId(null); // Clear user state
     setPage("login"); // Navigate to login page
   };
@@ -27,6 +31,7 @@ function App() {
       {page === "login" && <Login onLogin={handleLogin} />}
       {page === "landing" && (
         <LandingPage
+          username={username}
           userId={userId}
           onNavigateToCalendar={navigateToCalendar} // Navigate to Calendar
           onLogout={handleLogout} // Handle Logout
