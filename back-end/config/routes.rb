@@ -3,8 +3,12 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  resources :users do
+    resources :workouts do
+      resources :workout_exercises
+    end
+  end
 
-  resources :users
   resources :workouts
   resources :exercises
   resources :workout_exercises, only: [:create]

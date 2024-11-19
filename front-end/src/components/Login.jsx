@@ -6,7 +6,7 @@ import './Login.css';
 use useState to manage username input. When a user types into the input, the
 username value updates
 */
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [username, setUsername] = useState('');
 
   const handleLogin = () => {
@@ -17,6 +17,8 @@ const Login = () => {
       if (user) {
         // Save the user's ID in localStorage
         localStorage.setItem('userId', user.id);
+        //on login, navigate to landing page
+        onLogin(user.id)
         alert(`Welcome, ${user.name}! Your User ID is: ${user.id}`);
       } else {
         // No matching user found
@@ -25,11 +27,6 @@ const Login = () => {
     })
     .catch(() => alert('Error connecting to the server.'));
   };
-
-  const handleLogout = () => {
-    localStorage.removeItem('userId');
-    alert('user logged out');
-  }
 
   return (
     <div className="main-container">
@@ -46,10 +43,21 @@ const Login = () => {
         />
         <input className="input-field" placeholder="Enter Password" />
         <button className="login-btn" onClick={handleLogin}>Login</button>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+        
       </div>
     </div>
   );
 };
 
 export default Login;
+
+
+  //handling logout feature when we implement this elsewhere
+  /*const handleLogout = () => {
+    localStorage.removeItem('userId');
+    alert('user logged out');
+  }*/
+
+  //<button className="logout-btn" onClick={handleLogout}>Logout</button>
+
+ 

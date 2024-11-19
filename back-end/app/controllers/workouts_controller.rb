@@ -1,13 +1,15 @@
 class WorkoutsController < ApplicationController
 
+  before_action :set_user
+  before_action :set_workout, only: [:show, :update, :destroy] #excludes index
+
   def index
-    workouts = Workout.all
-    render json: workouts  
+    workouts = @user.workouts.includes(workout_exercises: :exercise)  # Eager loading to avoid N+1 queries
+    render json: workouts.as_json(include: { workout_exercises: { include: :exercise } })
   end
 
   def show
-    workout = Workout.find(params[:id])
-    render json: workout
+    render json: @workout.as_json(include: { workout_exercises: { include: :exercise } })
   end
 
   def create
@@ -39,4 +41,13 @@ class WorkoutsController < ApplicationController
   def workout_params
     params.require(:workout).permit(:user_id, :date, :notes)
   end
+
+  def set_user
+    @user = User.find(params[:user_id])
+  end
+
+  def set_workout
+    @workout = @user.workouts.find(params[:id])
+  end
+  
 end
