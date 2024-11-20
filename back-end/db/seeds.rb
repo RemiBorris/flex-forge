@@ -7,8 +7,6 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 
-require 'faker'
-
 # Clear existing data to prevent duplicates
 User.destroy_all
 Workout.destroy_all
@@ -18,53 +16,57 @@ SetEntry.destroy_all
 
 # Create two users
 users = [
-  User.create!(name: 'Alice Gymfan', email: 'alice@example.com', avatar: 'https://via.placeholder.com/150'),
-  User.create!(name: 'Bob Fitguy', email: 'bob@example.com', avatar: 'https://via.placeholder.com/150')
+  User.create!(name: 'Alice Johnson', email: 'alice@example.com', avatar: 'https://via.placeholder.com/150'),
+  User.create!(name: 'Bob Smith', email: 'bob@example.com', avatar: 'https://via.placeholder.com/150')
 ]
 
-# Create some sample exercises
-exercise_list = [
-  { name: 'Bench Press', category: 'Strength', description: 'Chest exercise', muscle_group: 'Chest' },
-  { name: 'Squat', category: 'Strength', description: 'Leg exercise', muscle_group: 'Legs' },
-  { name: 'Deadlift', category: 'Strength', description: 'Full body exercise', muscle_group: 'Back' },
-  { name: 'Pull-Up', category: 'Strength', description: 'Back exercise', muscle_group: 'Back' },
-  { name: 'Shoulder Press', category: 'Strength', description: 'Shoulder exercise', muscle_group: 'Shoulders' },
-  { name: 'Bicep Curl', category: 'Strength', description: 'Arm exercise', muscle_group: 'Arms' },
-  { name: 'Tricep Dip', category: 'Strength', description: 'Arm exercise', muscle_group: 'Arms' },
-  { name: 'Lunge', category: 'Strength', description: 'Leg exercise', muscle_group: 'Legs' },
-  { name: 'Plank', category: 'Core', description: 'Core exercise', muscle_group: 'Core' }
+# Create exercises
+exercises = [
+  Exercise.create!(name: 'Bench Press', category: 'Strength', description: 'Chest exercise', muscle_group: 'Chest'),
+  Exercise.create!(name: 'Squat', category: 'Strength', description: 'Leg exercise', muscle_group: 'Legs'),
+  Exercise.create!(name: 'Deadlift', category: 'Strength', description: 'Full body exercise', muscle_group: 'Back'),
+  Exercise.create!(name: 'Pull-Up', category: 'Strength', description: 'Back exercise', muscle_group: 'Back'),
+  Exercise.create!(name: 'Shoulder Press', category: 'Strength', description: 'Shoulder exercise', muscle_group: 'Shoulders'),
+  Exercise.create!(name: 'Bicep Curl', category: 'Strength', description: 'Arm exercise', muscle_group: 'Arms'),
+  Exercise.create!(name: 'Tricep Dip', category: 'Strength', description: 'Arm exercise', muscle_group: 'Arms'),
+  Exercise.create!(name: 'Lunge', category: 'Strength', description: 'Leg exercise', muscle_group: 'Legs'),
+  Exercise.create!(name: 'Plank', category: 'Core', description: 'Core exercise', muscle_group: 'Core')
 ]
 
-exercises = exercise_list.map do |exercise|
-  Exercise.create!(exercise)
-end
+# Define static workout dates
+static_dates = [
+  '2024-09-01', '2024-09-04', '2024-09-07', # Week 1
+  '2024-09-10', '2024-09-13', '2024-09-16', # Week 2
+  '2024-09-19', '2024-09-22', '2024-09-25', # Week 3
+  '2024-09-28', '2024-10-01', '2024-10-04', # Week 4
+  '2024-10-07', '2024-10-10', '2024-10-13', # Week 5
+  '2024-10-16', '2024-10-19', '2024-10-22'  # Week 6
+]
 
-# Create workouts for each user over 6 weeks (3-4 times per week)
-start_date = 6.weeks.ago.to_date
+# Assign workouts to each user
+users.each_with_index do |user, user_index|
+  static_dates.each_with_index do |date, workout_index|
+    workout = Workout.create!(
+      user: user,
+      date: Date.parse(date),
+      notes: "Workout #{workout_index + 1} for #{user.name}"
+    )
 
-users.each do |user|
-  workout_dates = (0..41).to_a.sample(21).map { |n| start_date + n.days }.sort
-
-  workout_dates.each do |date|
-    workout = Workout.create!(user: user, date: date, notes: Faker::Quote.matz)
-
-    # Randomly select 3-5 exercises for each workout
-    selected_exercises = exercises.sample(rand(3..5))
-
-    selected_exercises.each do |exercise|
+    # Add 3 exercises to each workout
+    [exercises[0], exercises[1], exercises[2]].each do |exercise|
       workout_exercise = WorkoutExercise.create!(workout: workout, exercise: exercise)
 
-      # Create 3-4 sets for each exercise with randomized reps and weight
-      (1..rand(3..4)).each do |set_number|
+      # Add 3 static sets for each exercise
+      3.times do |set_num|
         SetEntry.create!(
           workout_exercise: workout_exercise,
-          set_number: set_number,
-          reps: rand(6..12),
-          weight: rand(20..100)
+          set_number: set_num + 1,
+          reps: 10,
+          weight: 50 + (set_num * 5) # Increment weight per set
         )
       end
     end
   end
 end
 
-puts "Seed data created successfully!"
+puts "Static seed data with static dates created successfully!"
