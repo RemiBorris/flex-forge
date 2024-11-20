@@ -3,27 +3,27 @@ import axios from 'axios';
 import '../styles/Login.css';
 
 /*
-use useState to manage username input. When a user types into the input, the
-username value updates
+use useState to manage userEmail input. When a user types into the input, the
+userEmail value updates
 */
 const Login = ({ onLogin }) => {
-  const [username, setUsername] = useState('');
+  const [userEmail, setUserEmail] = useState('');
 
   const handleLogin = () => {
     axios.get(`${process.env.REACT_APP_API_URL}/users`)
     .then(response => {
       // Search for a user with a matching name
-      const user = response.data.find(user => user.name === username);
+      const user = response.data.find(user => user.email === userEmail);
       if (user) {
         // Save the user's ID in localStorage
         localStorage.setItem('userId', user.id);
-        localStorage.setItem('username', user.name); //added username to save in localStorage
+        localStorage.setItem('userEmail', user.name); //added userEmail to save in localStorage
         //on login, navigate to landing page
         onLogin(user.id)
         alert(`Welcome, ${user.name}! Your User ID is: ${user.id}`);
       } else {
         // No matching user found
-        alert('Invalid username!');
+        alert('Invalid Email!');
       }
     })
     .catch(() => alert('Error connecting to the server.'));
@@ -38,9 +38,9 @@ const Login = ({ onLogin }) => {
         <input
           className="input-field"
           type="text"
-          placeholder="Enter Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter Email"
+          value={userEmail}
+          onChange={(e) => setUserEmail(e.target.value)}
         />
         <input className="input-field" placeholder="Enter Password" />
         <button className="login-btn" onClick={handleLogin}>Login</button>
