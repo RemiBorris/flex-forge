@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import axios from 'axios';
 import 'react-calendar/dist/Calendar.css';
-import './WorkoutCalendar.css'; 
+import '../styles/WorkoutCalendar.css'; 
 import UserWorkouts from './UserWorkouts';
 
 const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {

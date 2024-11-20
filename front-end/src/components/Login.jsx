@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Login.css';
+import '../styles/Login.css';
 
 /*
 use useState to manage username input. When a user types into the input, the
