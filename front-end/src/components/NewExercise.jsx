@@ -27,7 +27,6 @@ const NewExercise = ({onNavigateToLanding}) => {
   const handleSearch = async () => {
     const results = await getExerciseByName(query);
     setQueryResults(results);
-    console.log(queryResults)
   }
 
   return(
