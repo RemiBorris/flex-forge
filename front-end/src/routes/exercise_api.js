@@ -18,10 +18,11 @@ const getExerciseById = async (id) => {
 };
 
 const getExerciseByName = async (exerciseName) => {
+  const searchQuery = exerciseName.toLowerCase();
   try {
     const response = await axios({
       method: 'GET',
-      url: `https://exercisedb.p.rapidapi.com/exercises/name/${exerciseName}`,
+      url: `https://exercisedb.p.rapidapi.com/exercises/name/${searchQuery}`,
       headers: {
         'x-rapidapi-key': process.env.REACT_APP_EXERCISE_API_KEY,
         'x-rapidapi-host': 'exercisedb.p.rapidapi.com',
