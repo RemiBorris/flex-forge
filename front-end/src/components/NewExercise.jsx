@@ -1,19 +1,7 @@
 import React, { useState } from 'react'
 import {getExerciseByName} from '../routes/exercise_api'
+import { saveExerciseToDatabase } from '../routes/database_routes';
 
-// API body parts: 
-/*
-0:"back"
-1:"cardio"
-2:"chest"
-3:"lower arms"
-4:"lower legs"
-5:"neck"
-6:"shoulders"
-7:"upper arms"
-8:"upper legs"
-9:"waist"
-*/
 
 const NewExercise = ({onNavigateToLanding}) => {
 
@@ -29,6 +17,21 @@ const NewExercise = ({onNavigateToLanding}) => {
     setQueryResults(results);
   }
 
+  const handleExerciseClick = async(exercise) => {
+    const confirmSave = window.confirm(
+      `Do you want to save the exercise "${exercise.name}" ?`
+    );
+    if (confirmSave) {
+      try {
+        await saveExerciseToDatabase(exercise);
+        alert(`Exercise "${exercise.name}" saved successfully!`);
+      } catch (error) {
+        console.error('Error saving exercise', error);
+        alert(`Failed  to save exercise "${exercise.name}"`)
+      }
+    }
+  }
+
   return(
     <div>
       <button onClick={onNavigateToLanding}>Back to Landing Page</button>
@@ -38,7 +41,13 @@ const NewExercise = ({onNavigateToLanding}) => {
       <h3>Search Results:</h3>
       <ul>
         {queryResults.map((result) => (
-          <li key={result.id}>{result.name}</li>
+          <li 
+          key={result.id}
+          onClick={() => handleExerciseClick(result)}
+          style={{cursor: 'pointer'}}
+          >
+            {result.name}
+          </li>
         ))}
       </ul>
     </div>
