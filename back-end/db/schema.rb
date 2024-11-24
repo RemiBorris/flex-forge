@@ -10,18 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_22_185230) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_23_232230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "exercises", force: :cascade do |t|
     t.string "name"
-    t.string "category"
-    t.text "description"
+    t.text "description", default: [], array: true
     t.string "muscle_group"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "api_key"
+    t.bigint "api_key"
   end
 
   create_table "set_entries", force: :cascade do |t|
