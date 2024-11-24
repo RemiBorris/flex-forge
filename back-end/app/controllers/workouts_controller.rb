@@ -4,12 +4,19 @@ class WorkoutsController < ApplicationController
   before_action :set_workout, only: [:show, :update, :destroy] #excludes index
 
   def index
-    workouts = @user.workouts.includes(workout_exercises: :exercise)  # Eager loading to avoid N+1 queries
-    render json: workouts.as_json(include: { workout_exercises: { include: :exercise } })
+    workouts = @user.workouts.includes(workout_exercises: :exercise) # Only include exercises, not set_entries
+    render json: workouts
   end
 
   def show
-    render json: @workout.as_json(include: { workout_exercises: { include: :exercise } })
+    render json: @workout.as_json(include: { 
+      workout_exercises: { 
+        include: [
+          :exercise, 
+          :set_entries # Include set_entries in the response for show
+        ] 
+      } 
+    })
   end
 
   def create
