@@ -12,7 +12,7 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
 
   // Fetch workouts and map them to dates
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}/workouts`)
+    axios.get(`${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts`)
       .then(({ data }) => {
         const map = data.reduce((acc, workout) => {
           const dateKey = new Date(workout.date).toDateString();
