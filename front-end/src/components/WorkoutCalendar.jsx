@@ -4,6 +4,7 @@ import axios from 'axios';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/WorkoutCalendar.css'; 
 import UserWorkouts from './UserWorkouts';
+import WorkoutDetails from './WorkoutDetails';
 
 const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
   const [workoutMap, setWorkoutMap] = useState({});
@@ -14,9 +15,8 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
     axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}/workouts`)
       .then(({ data }) => {
         const map = data.reduce((acc, workout) => {
-          const dateKey = new Date(workout.date).toDateString(); //get readable date
-          acc[dateKey] = acc[dateKey] || [];
-          acc[dateKey].push(workout); //add workout to the date's list
+          const dateKey = new Date(workout.date).toDateString();
+          acc[dateKey] = workout; // Directly assign the workout object
           return acc;
         }, {});
         setWorkoutMap(map); //saves mapped workouts
@@ -31,7 +31,7 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
     <div>
       <button onClick={onNavigateToLanding}>Back to Landing Page</button>
       {selectedDate && workoutMap[selectedDate.toDateString()] ? (
-        <UserWorkouts
+        <WorkoutDetails
           workouts={workoutMap[selectedDate.toDateString()]}
           onBack={() => setSelectedDate(null)}
         />
