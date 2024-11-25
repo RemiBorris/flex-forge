@@ -4,7 +4,7 @@ class WorkoutsController < ApplicationController
   before_action :set_workout, only: [:show, :update, :destroy] #excludes index
 
   def index
-    workouts = @user.workouts.includes(workout_exercises: :exercise) # Only include exercises, not set_entries
+    workouts = @user.workouts.includes(workout_exercises: [:exercise, :set_entries]) # Include set_entries
     render json: workouts
   end
 
