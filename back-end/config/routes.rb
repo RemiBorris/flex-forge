@@ -6,6 +6,11 @@ Rails.application.routes.draw do
   resources :users do
     resources :workouts do
       resources :workout_exercises
+      #add customer route for routines
+      collection do
+        get 'routines'
+        post 'create_routine'
+      end
     end
   end
 

@@ -3,7 +3,6 @@ import Calendar from 'react-calendar';
 import axios from 'axios';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/WorkoutCalendar.css'; 
-import UserWorkouts from './UserWorkouts';
 import WorkoutDetails from './WorkoutDetails';
 
 const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
@@ -12,7 +11,7 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
 
   // Fetch workouts and map them to dates
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts`)
+    axios.get(`${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts/routines`)
       .then(({ data }) => {
         const map = data.reduce((acc, workout) => {
           const dateKey = new Date(workout.date).toDateString();

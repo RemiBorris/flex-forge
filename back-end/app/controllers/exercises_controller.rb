@@ -1,6 +1,12 @@
 class ExercisesController < ApplicationController
   def index
+    # Check if muscle_group parameter is provided
+    if params[:muscle_group].present?
+      # Filter exercises by muscle_group
+      exercises = Exercise.where(muscle_group: params[:muscle_group])
+    else
     exercises = Exercise.all
+    end
     render json: exercises
   end
 
@@ -10,7 +16,8 @@ class ExercisesController < ApplicationController
   end
 
   def create
-    exercise = Exercise.create(exercise_params)
+    #changed from .create to .new to avoid saving exercise before checking if valid
+    exercise = Exercise.new(exercise_params)
     if exercise.save
       render json: exercise, status: :created
     else
