@@ -24,6 +24,11 @@ function App() {
     setPage("login"); // Navigate to login page
   };
 
+  const onRoutineCreated = () => {
+    // This can either re-fetch routines or just trigger a state update.
+    setPage('landing');
+  };
+
   const navigateToCalendar = () => setPage('calendar');
   const navigateToLanding = () => setPage('landing');
   const navigateToNewRoutine = () => setPage('newRoutine');
