@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const WorkoutDetails = ({ workouts, onBack, onNavigateToLanding }) => {
+const WorkoutDetails = ({ workouts, onBack }) => {
   const [workoutData, setWorkoutData] = useState(null); // Start with null to represent loading
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const WorkoutDetails = ({ workouts, onBack, onNavigateToLanding }) => {
       <h2>Workout Details</h2>
       <p>
         <strong>Date:</strong>{" "}
-        {workouts.date ? new Date(workouts.date).toLocaleDateString() : "Unknown"}
+        {workouts.date ? new Date(workouts.date).toISOString().split('T')[0] : "Unknown"}
         <br/>
         <strong>Notes:</strong>{" "}
         {workouts.notes}
