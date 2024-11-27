@@ -3,7 +3,6 @@ import Calendar from 'react-calendar';
 import axios from 'axios';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/WorkoutCalendar.css'; 
-import UserWorkouts from './UserWorkouts';
 import WorkoutDetails from './WorkoutDetails';
 
 const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
