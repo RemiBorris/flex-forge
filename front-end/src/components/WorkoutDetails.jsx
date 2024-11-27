@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const WorkoutDetails = ({ workouts }) => {
+const WorkoutDetails = ({ workouts, onBack, onNavigateToLanding }) => {
   const [workoutData, setWorkoutData] = useState(null); // Start with null to represent loading
 
   useEffect(() => {
@@ -61,6 +61,9 @@ const WorkoutDetails = ({ workouts }) => {
       ) : (
         <p>No exercises available for this workout.</p>
       )}
+      {/* Add the back button here */}
+      <button onClick={onBack}>Back to Calendar</button>
+
     </div>
   );
 };

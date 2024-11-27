@@ -17,20 +17,20 @@ const NewExercise = ({onNavigateToLanding}) => {
     setQueryResults(results);
   }
 
-  const handleExerciseClick = async(exercise) => {
+  const handleExerciseClick = async (exercise) => {
     const confirmSave = window.confirm(
-      `Do you want to save the exercise "${exercise.name}" ?`
+      `Do you want to save the exercise "${exercise.name}"?`
     );
     if (confirmSave) {
       try {
         await saveExerciseToDatabase(exercise);
         alert(`Exercise "${exercise.name}" saved successfully!`);
       } catch (error) {
-        console.error('Error saving exercise', error);
-        alert(`Failed  to save exercise "${exercise.name}"`)
+        console.error('Error saving exercise:', error);
+        alert(`Failed to save exercise "${exercise.name}".`);
       }
     }
-  }
+  };
 
   return(
     <div>

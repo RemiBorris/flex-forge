@@ -11,10 +11,10 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
 
   // Fetch workouts and map them to dates
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts/routines`)
+    axios.get(`${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts`)
       .then(({ data }) => {
         const map = data.reduce((acc, workout) => {
-          const dateKey = new Date(workout.date).toDateString();
+          const dateKey = new Date(workout.date).toISOString().split('T')[0]; // Use YYYY-MM-DD
           acc[dateKey] = workout; // Directly assign the workout object
           return acc;
         }, {});
@@ -23,22 +23,25 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
   }, [userId]);
 
   // Render dots for workout days
-  const tileContent = ({ date }) =>
-    workoutMap[date.toDateString()] ? <div className="dot" /> : null;
+  const tileContent = ({ date }) => {
+    const dateKey = date.toISOString().split('T')[0];
+    return workoutMap[dateKey] ? <div className="dot" /> : null;
+  };
 
   return (
     <div>
       <button onClick={onNavigateToLanding}>Back to Landing Page</button>
-      {selectedDate && workoutMap[selectedDate.toDateString()] ? (
+      {selectedDate && workoutMap[selectedDate.toISOString().split('T')[0]] ? (
         <WorkoutDetails
-          workouts={workoutMap[selectedDate.toDateString()]}
+           workouts={workoutMap[selectedDate.toISOString().split('T')[0]]}
           onBack={() => setSelectedDate(null)}
         />
       ) : (
         <Calendar
         onClickDay={(date) => {
+          const dateKey = date.toISOString().split('T')[0];
           // Only set the selected date if there are workouts for that day
-          if (workoutMap[date.toDateString()]) {
+          if (workoutMap[dateKey]) {
             setSelectedDate(date);
           }
         }}

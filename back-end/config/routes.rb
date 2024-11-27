@@ -9,10 +9,14 @@ Rails.application.routes.draw do
       #add customer route for routines
       collection do
         get 'routines'
-        post 'create_routine'
       end
     end
   end
+
+  # Custom routes for creating routines and scheduled workouts
+  post '/users/:user_id/workouts/create_routine', to: 'workouts#create_routine'
+  post '/users/:user_id/workouts/create_scheduled_workout', to: 'workouts#create_scheduled_workout'
+
 
   resources :workouts
   resources :exercises

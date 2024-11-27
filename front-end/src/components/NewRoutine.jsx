@@ -16,11 +16,11 @@ const NewRoutine = ({onNavigateToLanding}) =>{
   
      // Hardcoded muscle groups
   const muscleGroups = [
-    "Abductors", "Abs", "Adductors", "Biceps", "Calves", 
-    "Cardiovascular system", "Delts", "Forearms", "Glutes", 
-    "Hamstrings", "Lats", "Levator scapulae", "Pectorals", 
-    "Quads", "Serratus anterior", "Spine", "Traps", "Triceps", 
-    "Upper back"
+    "abductors", "abs", "adductors", "biceps", "calves", 
+    "cardiovascular system", "delts", "forearms", "glutes", 
+    "hamstrings", "lats", "levator scapulae", "pectorals", 
+    "quads", "serratus anterior", "spine", "traps", "triceps", 
+    "upper back"
   ];
 
    // Fetch exercises when muscle group is selected
@@ -29,9 +29,14 @@ const NewRoutine = ({onNavigateToLanding}) =>{
       console.log('Fetching exercises for:', selectedMuscleGroup);  // Log selected muscle group
       const fetchExercisesForMuscleGroup = async () => {
         try {
+          console.log('Fetching from URL:', `${process.env.REACT_APP_API_URL}/exercises?muscle_group=${selectedMuscleGroup}`);
           const response = await axios.get(`${process.env.REACT_APP_API_URL}/exercises?muscle_group=${selectedMuscleGroup}`);
-          console.log('Fetched exercises:', response.data); // Debugging line
+          console.log('Fetched exercises:', response.data); // Log the fetched exercise
+          console.log('Fetched exercises data:', response.data); // Log the response data
+        
           setAvailableExercises(response.data); // Assuming exercises returns a filtered list of exercises
+            // Check the state immediately after updating
+            console.log('State after setting availableExercises:', availableExercises);
         } catch (error) {
           console.error('Error fetching exercises:', error);
         }
@@ -40,6 +45,7 @@ const NewRoutine = ({onNavigateToLanding}) =>{
       fetchExercisesForMuscleGroup();
     }
   }, [selectedMuscleGroup]);
+  
 
   // Handle adding an exercise to the routine
   const handleAddExercise = () => {
@@ -61,6 +67,8 @@ const NewRoutine = ({onNavigateToLanding}) =>{
 
   // Handle save routine
   const handleSaveRoutine = async () => {
+    console.log('handleSaveRoutine called');
+    
     const payload = {
       workout: {
         user_id: userId,
@@ -77,9 +85,11 @@ const NewRoutine = ({onNavigateToLanding}) =>{
       }
     };
 
+    console.log('Payload being sent:', payload); // Log the payload to check its structure
+
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/${userId}/workouts/create_routine`, payload);
-      console.log(response.data)
+      (console.log(response.data))
       alert('Routine created successfully!');
       onNavigateToLanding();
     } catch (error) {
@@ -90,6 +100,7 @@ const NewRoutine = ({onNavigateToLanding}) =>{
 
   return (
     <div>
+
       <button onClick={onNavigateToLanding}>Back to Landing Page</button>
 
       <h1>Create a New Routine</h1>
@@ -112,7 +123,11 @@ const NewRoutine = ({onNavigateToLanding}) =>{
           Select Muscle Group:
           <select
             value={selectedMuscleGroup}
-            onChange={(e) => setSelectedMuscleGroup(e.target.value)}
+            onChange={(e) => {
+              const selectedGroup = e.target.value;
+              setSelectedMuscleGroup(selectedGroup);
+              console.log('Selected Muscle Group:', selectedGroup); // Log the selected value
+            }}
             required
           >
             <option value="">-- Select --</option>
