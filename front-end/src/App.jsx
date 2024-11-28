@@ -4,23 +4,20 @@ import LandingPage from "./components/LandingPage";
 import React, { useState } from "react"; // Import useState
 import NewRoutine from "./components/NewRoutine";
 import NewExercise from "./components/NewExercise";
+import ProfilePage from "./components/ProfilePage";
 
 function App() {
-  const [userId, setUserId] = useState(null); // Manage logged-in state
-  const [username, setUsername] = useState(null)
   const [page, setPage] = useState('login'); // Manage navigation
 
   const handleLogin = (id) => {
-    const storedUsername = localStorage.getItem("username");
-    setUsername(storedUsername); // Save username for landing page welcome
-    setUserId(id); // Save userId
     setPage('landing'); // Navigate to Landing Page
   };
 
   const handleLogout = () => {
     localStorage.removeItem("userId"); // Remove user ID from localStorage
-    localStorage.removeItem("username") //remove user's name from localStorage
-    setUserId(null); // Clear user state
+    localStorage.removeItem("userName"); //remove user's name from localStorage
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userAvatar")
     setPage("login"); // Navigate to login page
   };
 
@@ -28,6 +25,7 @@ function App() {
   const navigateToLanding = () => setPage('landing');
   const navigateToNewRoutine = () => setPage('newRoutine');
   const navigateToNewExercise = () => setPage('newExercise');
+  const nagivateToProfilePage = () => setPage('profile')
 
   return (
     <div>
@@ -35,17 +33,15 @@ function App() {
       {page === "login" && <Login onLogin={handleLogin} />}
       {page === "landing" && (
         <LandingPage
-          username={username}
-          userId={userId}
           onNavigateToCalendar={navigateToCalendar} // Navigate to Calendar
           onLogout={handleLogout} // Handle Logout
           onNavigateToNewRoutine={navigateToNewRoutine}
           onNavigateToNewExercise={navigateToNewExercise}
+          onNavigateToProfile={nagivateToProfilePage}
         />
       )}
       {page === "calendar" && (
         <WorkoutCalendar
-          userId={userId}
           onNavigateToLanding={navigateToLanding} // Go back to Landing Page
         />
       )}
@@ -56,6 +52,11 @@ function App() {
       )}
       {page === "newExercise" && (
         <NewExercise
+        onNavigateToLanding={navigateToLanding}
+        />
+      )}
+      {page === "profile" && (
+        <ProfilePage
         onNavigateToLanding={navigateToLanding}
         />
       )}
