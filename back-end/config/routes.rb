@@ -1,16 +1,20 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  # Define user and nested workout routes
   resources :users do
     resources :workouts do
-      resources :workout_exercises
+      collection do
+        get 'exercise_summary' # New route to fetch summarized exercise data
+      end
+      resources :workout_exercises # Nested resources for workout_exercises
     end
   end
 
+  # Additional resources
   resources :workouts
   resources :exercises
   resources :workout_exercises, only: [:create]
   resources :set_entries, only: [:create, :update]
+
+  # Root route (optional, modify if you have a specific root controller/action)
+  # root "home#index"
 end
