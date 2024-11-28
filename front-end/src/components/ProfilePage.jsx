@@ -78,7 +78,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
       const datasets = Object.keys(groupedData)
         .filter((exerciseId) => selectedExercises[exerciseId]) // Only include selected exercises
         .map((exerciseId, index) => {
-          const { name, dates, avgWeights } = groupedData[exerciseId];
+          const { name, avgWeights } = groupedData[exerciseId];
 
           return {
             label: name,
