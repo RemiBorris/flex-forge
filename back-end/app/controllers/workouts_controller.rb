@@ -18,29 +18,75 @@ class WorkoutsController < ApplicationController
     })
   end
 
-  def create
-    workout = @user.workouts.new(workout_params)
-    if workout.save
-      render json: workout, status: :created
-    else
-      render json: workout.errors, status: :unprocessable_entity
-    end
-  end
+  # CREATE action for routines (remains the same)
+  def create_routine
+    @workout = @user.workouts.new(workout_params)
+    @workout.isRoutine = true  # Mark this workout as a routine
 
-  def update
-    sanitized_params = sanitize_params_for_update
-    if @workout.update(sanitized_params)
+    if @workout.save
       render json: @workout.as_json(include: {
         workout_exercises: {
-          include: [
-            :exercise,
-            :set_entries
-          ]
+          include: :set_entries
         }
-      })
+      }), status: :created
     else
       render json: @workout.errors, status: :unprocessable_entity
     end
+  end
+
+    # CREATE action for scheduled workouts
+    def create_scheduled_workout
+      
+      # Find the routine based on the provided routine_id
+      routine = @user.workouts.find_by(id: params[:routine_id], isRoutine: true)
+  
+      if routine.nil?
+        render json: { error: "Routine not found" }, status: :not_found
+        return
+      end
+  
+      # Create a new workout based on the routine's template
+      @workout = @user.workouts.new(
+        isRoutine: false,
+         routine_name: routine.routine_name,
+         date: params[:date]
+        )
+  
+      # Copy all workout exercises from the routine to the new workout
+      routine.workout_exercises.each do |workout_exercise|
+        @workout.workout_exercises.build(
+          exercise_id: workout_exercise.exercise_id,
+          set_entries_attributes: workout_exercise.set_entries.map do |set_entry|
+            {
+              set_number: set_entry.set_number,
+              reps: set_entry.reps,
+              weight: set_entry.weight
+            }
+          end
+        )
+      end
+  
+      if @workout.save
+        render json: @workout.as_json(include: { workout_exercises: { include: :set_entries } }), status: :created
+      else
+        render json: @workout.errors, status: :unprocessable_entity
+      end
+    end
+  
+
+  # UPDATE action - edit an existing workout
+  def update
+    if @workout.update(workout_params)
+      render json: @workout
+    else
+      render json: @workout.errors, status: :unprocessable_entity
+    end
+  end
+
+  # Action to retrieve ONLY routines (those marked isRoutine: true)
+  def routines
+    routines = @user.workouts.where(isRoutine: true).includes(workout_exercises: [:exercise, :set_entries]) 
+    render json: routines
   end
 
   def destroy
@@ -52,35 +98,24 @@ class WorkoutsController < ApplicationController
 
   def workout_params
     params.require(:workout).permit(
+      :user_id,
+      :isRoutine,
+      :routine_name,
       :date,
-      :notes,
+      :notes, # Support for workout notes
       workout_exercises_attributes: [
-        :id,
+        :id, # Required for updating existing records
         :exercise_id,
-        :_destroy,
+        :_destroy, # Allows marking workout_exercises for deletion
         set_entries_attributes: [
-          :id,
+          :id, # Required for updating existing set entries
           :set_number,
           :reps,
           :weight,
-          :_destroy
+          :_destroy # Allows marking set_entries for deletion
         ]
       ]
     )
-  end
-
-  # Sanitize params by removing unnecessary keys
-  def sanitize_params_for_update
-    sanitized = workout_params.to_h
-    sanitized.delete('id') # Ensure 'id' isn't passed to the top-level workout object
-    sanitized.deep_transform_values do |value|
-      # Remove nested `created_at`, `updated_at` where unnecessary
-      if value.is_a?(Hash)
-        value.reject { |k, _| %w[created_at updated_at].include?(k) }
-      else
-        value
-      end
-    end
   end
 
   def set_user

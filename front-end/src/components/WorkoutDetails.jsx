@@ -196,6 +196,8 @@ const WorkoutDetails = ({ workouts, onBack }) => {
       ) : (
         <button onClick={() => setEditMode(true)}>Edit Workout</button>
       )}
+      {/* Add the back button here */}
+      <button onClick={onBack}>Back to Calendar</button>
     </div>
   );
 };

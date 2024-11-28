@@ -22,15 +22,15 @@ users = [
 
 # Create exercises
 exercises = [
-  Exercise.create!(name: 'Barbell Bench Press', description: 'Chest exercise', muscle_group: 'Pectorals', api_key: "0025"),
-  Exercise.create!(name: 'Barbell Full Squat', description: 'Leg exercise', muscle_group: 'Glutes', api_key: "0043"),
-  Exercise.create!(name: 'Barbell Deadlift', description: 'Full body exercise', muscle_group: 'Back', api_key: "0032"),
-  Exercise.create!(name: 'Pull-Up', description: 'Back exercise', muscle_group: 'Lats', api_key: "0652"),
-  Exercise.create!(name: 'Dumbbell One Arm Shoulder Press', description: 'Shoulder exercise', muscle_group: 'Delts', api_key: "0361"),
-  Exercise.create!(name: 'Dumbbell Seated Bicep Curl', description: 'Arm exercise', muscle_group: 'Biceps', api_key: "1677"),
-  Exercise.create!(name: 'Weighted Tricep Dips', description: 'Arm exercise', muscle_group: 'Triceps', api_key: "1755"),
-  Exercise.create!(name: 'Dumbbell Lunge', description: 'Leg exercise', muscle_group: 'Glutes', api_key: "0336"),
-  Exercise.create!(name: 'Weighted Front Plank', description: 'Core exercise', muscle_group: 'Abs', api_key: "2135")
+  Exercise.create!(name: 'Barbell Bench Press', description: 'Chest exercise', muscle_group: 'pectorals', api_key: "0025"),
+  Exercise.create!(name: 'Barbell Full Squat', description: 'Leg exercise', muscle_group: 'glutes', api_key: "0043"),
+  Exercise.create!(name: 'Barbell Deadlift', description: 'Full body exercise', muscle_group: 'back', api_key: "0032"),
+  Exercise.create!(name: 'Pull-Up', description: 'Back exercise', muscle_group: 'lats', api_key: "0652"),
+  Exercise.create!(name: 'Dumbbell One Arm Shoulder Press', description: 'Shoulder exercise', muscle_group: 'delts', api_key: "0361"),
+  Exercise.create!(name: 'Dumbbell Seated Bicep Curl', description: 'Arm exercise', muscle_group: 'biceps', api_key: "1677"),
+  Exercise.create!(name: 'Weighted Tricep Dips', description: 'Arm exercise', muscle_group: 'triceps', api_key: "1755"),
+  Exercise.create!(name: 'Dumbbell Lunge', description: 'Leg exercise', muscle_group: 'glutes', api_key: "0336"),
+  Exercise.create!(name: 'Weighted Front Plank', description: 'Core exercise', muscle_group: 'abs', api_key: "2135")
 ]
 
 # Define static workout dates

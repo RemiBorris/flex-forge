@@ -4,11 +4,13 @@ import LandingPage from "./components/LandingPage";
 import React, { useState } from "react"; // Import useState
 import NewRoutine from "./components/NewRoutine";
 import NewExercise from "./components/NewExercise";
+import WorkoutDetails from "./components/WorkoutDetails";
 
 function App() {
   const [userId, setUserId] = useState(null); // Manage logged-in state
   const [username, setUsername] = useState(null)
   const [page, setPage] = useState('login'); // Manage navigation
+  const [selectedWorkout, setSelectedWorkout] = useState(null); // Selected workout
 
   const handleLogin = (id) => {
     const storedUsername = localStorage.getItem("username");
@@ -23,6 +25,12 @@ function App() {
     setUserId(null); // Clear user state
     setPage("login"); // Navigate to login page
   };
+
+  const handleNavigateToWorkoutDetails = (workout) => {
+    setSelectedWorkout(workout); // Set the selected workout
+    setPage('workoutDetails'); // Navigate to WorkoutDetails view
+  };
+
 
   const navigateToCalendar = () => setPage('calendar');
   const navigateToLanding = () => setPage('landing');
@@ -41,6 +49,7 @@ function App() {
           onLogout={handleLogout} // Handle Logout
           onNavigateToNewRoutine={navigateToNewRoutine}
           onNavigateToNewExercise={navigateToNewExercise}
+          onNavigateToWorkoutDetails={handleNavigateToWorkoutDetails} // Navigate to WorkoutDetails
         />
       )}
       {page === "calendar" && (
@@ -57,6 +66,13 @@ function App() {
       {page === "newExercise" && (
         <NewExercise
         onNavigateToLanding={navigateToLanding}
+        />
+      )}
+      {page === "workoutDetails" && selectedWorkout && (
+        <WorkoutDetails
+          workouts={selectedWorkout} // Pass the selected workout
+          onBack={navigateToCalendar} // Navigate back to calendar
+          onNavigateToLanding={navigateToLanding} // Navigate back to landing
         />
       )}
     </div>
