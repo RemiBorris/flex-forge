@@ -106,8 +106,9 @@ class WorkoutsController < ApplicationController
       :routine_name,
       :date,
       workout_exercises_attributes: [
+        :id, #include workout_exercise ID
         :exercise_id, 
-        set_entries_attributes: [:set_number, :reps, :weight]
+        set_entries_attributes: [ :id, :set_number, :reps, :weight, :destroy]
       ]
     )
   end
