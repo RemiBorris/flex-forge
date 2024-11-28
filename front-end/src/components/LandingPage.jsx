@@ -1,11 +1,12 @@
 import React from 'react';
 
-const LandingPage = ({ onNavigateToCalendar, username, onLogout, onNavigateToNewRoutine, onNavigateToNewExercise }) => (
+const LandingPage = ({ onNavigateToCalendar, onLogout, onNavigateToNewRoutine, onNavigateToNewExercise, onNavigateToProfile }) => (
   <div>
-    <h1>Welcome to Flex Forge, {username}!</h1>
+    <h1>Welcome to Flex Forge, {localStorage.userName}!</h1>
     <button onClick={onNavigateToCalendar}>Go to Calendar</button>
     <button onClick={onNavigateToNewRoutine}>Create New Routine</button>
     <button onClick={onNavigateToNewExercise}>Create New Exercise</button>
+    <button onClick={onNavigateToProfile}>Profile</button>
     <button onClick={onLogout}>Logout</button>
   </div>
 );

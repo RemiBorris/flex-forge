@@ -3,10 +3,9 @@ import Calendar from 'react-calendar';
 import axios from 'axios';
 import 'react-calendar/dist/Calendar.css';
 import '../styles/WorkoutCalendar.css'; 
-import UserWorkouts from './UserWorkouts';
 import WorkoutDetails from './WorkoutDetails';
 
-const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
+const WorkoutCalendar = ({ onNavigateToLanding }) => {
   const [workoutMap, setWorkoutMap] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -15,34 +14,37 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
     axios.get(`${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts`)
       .then(({ data }) => {
         const map = data.reduce((acc, workout) => {
-          const dateKey = new Date(workout.date).toDateString();
-          acc[dateKey] = workout; // Directly assign the workout object
+          const dateKey = new Date(workout.date).toISOString().split('T')[0]; // Use YYYY-MM-DD
+          acc[dateKey] = workout; // Map workouts by date
           return acc;
         }, {});
-        setWorkoutMap(map); //saves mapped workouts
+        setWorkoutMap(map); // Save the mapped workouts
       });
-  }, [userId]);
+  }, []);
 
   // Render dots for workout days
-  const tileContent = ({ date }) =>
-    workoutMap[date.toDateString()] ? <div className="dot" /> : null;
+  const tileContent = ({ date }) => {
+    const dateKey = date.toISOString().split('T')[0]; 
+    return workoutMap[dateKey] ? <div className="dot" /> : null;
+  };
 
   return (
     <div>
       <button onClick={onNavigateToLanding}>Back to Landing Page</button>
-      {selectedDate && workoutMap[selectedDate.toDateString()] ? (
+      {selectedDate && workoutMap[selectedDate.toISOString().split('T')[0]] ? (
         <WorkoutDetails
-          workouts={workoutMap[selectedDate.toDateString()]}
+          workouts={workoutMap[selectedDate.toISOString().split('T')[0]]}
           onBack={() => setSelectedDate(null)}
         />
       ) : (
         <Calendar
-        onClickDay={(date) => {
-          // Only set the selected date if there are workouts for that day
-          if (workoutMap[date.toDateString()]) {
-            setSelectedDate(date);
-          }
-        }}
+          onClickDay={(date) => {
+            const dateKey = date.toISOString().split('T')[0];
+            // Only set the selected date if there are workouts for that day
+            if (workoutMap[dateKey]) {
+              setSelectedDate(date);
+            }
+          }}
           tileContent={tileContent}
         />
       )}
@@ -51,5 +53,3 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
 };
 
 export default WorkoutCalendar;
-
-

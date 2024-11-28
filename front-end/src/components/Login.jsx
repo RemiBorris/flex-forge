@@ -17,7 +17,9 @@ const Login = ({ onLogin }) => {
       if (user) {
         // Save the user's ID in localStorage
         localStorage.setItem('userId', user.id);
-        localStorage.setItem('userEmail', user.name); //added userEmail to save in localStorage
+        localStorage.setItem('userEmail', user.email); //added userEmail to save in localStorage
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('userAvatar', user.avatar);
         //on login, navigate to landing page
         onLogin(user.id)
         alert(`Welcome, ${user.name}! Your User ID is: ${user.id}`);
