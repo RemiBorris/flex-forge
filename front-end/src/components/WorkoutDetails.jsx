@@ -30,23 +30,33 @@ const WorkoutDetails = ({ workouts, onBack }) => {
     setWorkoutData(updatedWorkout);
   };
 
-  // Function to handle deleting a set
-  const handleDeleteSet = (exerciseId, setId) => {
-    if (!workoutData) return; // Ensure data exists
-    const updatedWorkout = { ...workoutData };
-    const exercise = updatedWorkout.workout_exercises.find(
-      (ex) => ex.id === exerciseId
-    );
-    const set = exercise.set_entries.find((set) => set.id === setId);
-  if (set) {
-    // If the set has an ID, mark it for deletion
-    set._destroy = true;
-  } else {
-    // If the set is newly created (no ID), just filter it out
-    exercise.set_entries = exercise.set_entries.filter((set) => set.id !== setId);
-  }
-    setWorkoutData(updatedWorkout);
+// Function to handle deleting a set
+const handleDeleteSet = (exerciseId, setId) => {
+  if (!workoutData) return; // Ensure data exists
+
+  // Create a deep copy of workoutData
+  const updatedWorkout = {
+    ...workoutData,
+    workout_exercises: workoutData.workout_exercises.map((exercise) => {
+      if (exercise.id === exerciseId) {
+        return {
+          ...exercise,
+          set_entries: exercise.set_entries.map((set) => {
+            if (set.id === setId) {
+              return { ...set, _destroy: true }; // Mark for deletion
+            }
+            return set;
+          }),
+        };
+      }
+      return exercise;
+    }),
   };
+
+  setWorkoutData(updatedWorkout);
+};
+
+  
 
   // Function to handle input changes for reps and weight
   const handleInputChange = (exerciseId, setId, field, value) => {
@@ -120,113 +130,125 @@ const WorkoutDetails = ({ workouts, onBack }) => {
     return <p>{errors || "Loading workout details..."}</p>;
   }
 
-  // Render workout details in view or edit mode
-  return (
-    <div>
-      <h2>Workout Details</h2>
-      <p>
-        <strong>Date:</strong>{" "}
-        {workoutData.date
-          ? new Date(workoutData.date).toLocaleDateString()
-          : "Unknown"}
-        <br />
-        <strong>Notes:</strong> {workoutData.notes}
-      </p>
 
-      <h3>Exercises</h3>
-      {errors && <p style={{ color: "red" }}>{errors}</p>}
-      {workoutData.workout_exercises.map((exercise) => (
-        <div key={exercise.id}>
-          <h4>{exercise.exercise.name}</h4>
-          {editMode ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>Reps</th>
-                  <th>Weight</th>
-                  <th>Actions</th>
+
+  // Function to handle rendering workout exercises for the UI
+const renderWorkoutExercises = () => {
+  if (!workoutData) return null;
+
+  // Return a version of workoutData with sets marked `_destroy: true` excluded from display
+  return workoutData.workout_exercises.map((exercise) => ({
+    ...exercise,
+    set_entries: exercise.set_entries.filter((set) => set._destroy !== true), // Filter only for display
+  }));
+};
+
+const workoutExercisesForUI = renderWorkoutExercises();
+
+return (
+  <div>
+    <h2>Workout Details</h2>
+    <p>
+      <strong>Date:</strong>{" "}
+      {workoutData.date
+        ? new Date(workoutData.date).toLocaleDateString()
+        : "Unknown"}
+      <br />
+      <strong>Notes:</strong> {workoutData.notes}
+    </p>
+
+    <h3>Exercises</h3>
+    {errors && <p style={{ color: "red" }}>{errors}</p>}
+    {workoutExercisesForUI.map((exercise) => (
+      <div key={exercise.id}>
+        <h4>{exercise.exercise.name}</h4>
+        {editMode ? (
+          <table>
+            <thead>
+              <tr>
+                <th>Reps</th>
+                <th>Weight</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {exercise.set_entries.map((set) => (
+                <tr key={set.id}>
+                  <td>
+                    <input
+                      type="number"
+                      value={set.reps}
+                      onChange={(e) =>
+                        handleInputChange(
+                          exercise.id,
+                          set.id,
+                          "reps",
+                          parseInt(e.target.value, 10)
+                        )
+                      }
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      value={set.weight}
+                      onChange={(e) =>
+                        handleInputChange(
+                          exercise.id,
+                          set.id,
+                          "weight",
+                          parseInt(e.target.value, 10)
+                        )
+                      }
+                    />
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => handleDeleteSet(exercise.id, set.id)}
+                    >
+                      X
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {exercise.set_entries.map((set) => (
-                  <tr key={set.id}>
-                    <td>
-                      <input
-                        type="number"
-                        value={set.reps}
-                        onChange={(e) =>
-                          handleInputChange(
-                            exercise.id,
-                            set.id,
-                            "reps",
-                            parseInt(e.target.value, 10)
-                          )
-                        }
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        value={set.weight}
-                        onChange={(e) =>
-                          handleInputChange(
-                            exercise.id,
-                            set.id,
-                            "weight",
-                            parseInt(e.target.value, 10)
-                          )
-                        }
-                      />
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => handleDeleteSet(exercise.id, set.id)}
-                      >
-                        X
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <table>
-              <thead>
-                <tr>
-                  <th>Reps</th>
-                  <th>Weight</th>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Reps</th>
+                <th>Weight</th>
+              </tr>
+            </thead>
+            <tbody>
+              {exercise.set_entries.map((set) => (
+                <tr key={set.id}>
+                  <td>{set.reps}</td>
+                  <td>{set.weight} lbs</td>
                 </tr>
-              </thead>
-              <tbody>
-                {exercise.set_entries.map((set) => (
-                  <tr key={set.id}>
-                    <td>{set.reps}</td>
-                    <td>{set.weight} lbs</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-          {editMode && (
-            <button onClick={() => handleAddSet(exercise.id)}>
-              Add New Set
-            </button>
-          )}
-        </div>
-      ))}
-      {editMode ? (
-        <div>
-          <button onClick={handleSaveChanges}>Save Changes</button>
-          <button onClick={() => setEditMode(false)}>Cancel</button>
-          <button onClick={handleDeleteWorkout}>Delete Workout</button>
-        </div>
-      ) : (
-        <button onClick={() => setEditMode(true)}>Edit Workout</button>
-      )}
-      {/* Add the back button here */}
-      <button onClick={onBack}>Back to Calendar</button>
-    </div>
-  );
+              ))}
+            </tbody>
+          </table>
+        )}
+        {editMode && (
+          <button onClick={() => handleAddSet(exercise.id)}>Add New Set</button>
+        )}
+      </div>
+    ))}
+    {editMode ? (
+      <div>
+        <button onClick={handleSaveChanges}>Save Changes</button>
+        <button onClick={() => setEditMode(false)}>Cancel</button>
+        <button onClick={handleDeleteWorkout}>Delete Workout</button>
+      </div>
+    ) : (
+      <button onClick={() => setEditMode(true)}>Edit Workout</button>
+    )}
+    <button onClick={onBack}>Back to Calendar</button>
+  </div>
+);
+
 };
 
 export default WorkoutDetails;
