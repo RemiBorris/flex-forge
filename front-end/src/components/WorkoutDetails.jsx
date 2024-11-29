@@ -22,7 +22,7 @@ const WorkoutDetails = ({ workouts, onBack }) => {
   // Function to handle adding a new set to a specific exercise
   const handleAddSet = (exerciseId) => {
     if (!workoutData) return; // Ensure data exists
-    const updatedWorkout = JSON.parse(JSON.stringify(workoutData)); // Deep clone
+    const updatedWorkout = { ...workoutData };
     const exercise = updatedWorkout.workout_exercises.find(
       (ex) => ex.id === exerciseId
     );
@@ -33,28 +33,25 @@ const WorkoutDetails = ({ workouts, onBack }) => {
   // Function to handle deleting a set
   const handleDeleteSet = (exerciseId, setId) => {
     if (!workoutData) return; // Ensure data exists
-
-    // Deep clone workoutData to ensure React detects the state change
-    const updatedWorkout = JSON.parse(JSON.stringify(workoutData));
-    const exercise = updatedWorkout.workout_exercises.find((ex) => ex.id === exerciseId);
-
-    if (!exercise) return; // No exercise found
-
+    const updatedWorkout = { ...workoutData };
+    const exercise = updatedWorkout.workout_exercises.find(
+      (ex) => ex.id === exerciseId
+    );
     const set = exercise.set_entries.find((set) => set.id === setId);
-    if (set) {
-      set._destroy = true; // Mark set for deletion
-    } else {
-      // If set is newly created (no ID), remove it directly
-      exercise.set_entries = exercise.set_entries.filter((set) => set.id !== setId);
-    }
-
-    setWorkoutData(updatedWorkout); // Update state to trigger re-render
+  if (set) {
+    // If the set has an ID, mark it for deletion
+    set._destroy = true;
+  } else {
+    // If the set is newly created (no ID), just filter it out
+    exercise.set_entries = exercise.set_entries.filter((set) => set.id !== setId);
+  }
+    setWorkoutData(updatedWorkout);
   };
 
   // Function to handle input changes for reps and weight
   const handleInputChange = (exerciseId, setId, field, value) => {
     if (!workoutData) return; // Ensure data exists
-    const updatedWorkout = JSON.parse(JSON.stringify(workoutData)); // Deep clone
+    const updatedWorkout = { ...workoutData };
     const exercise = updatedWorkout.workout_exercises.find(
       (ex) => ex.id === exerciseId
     );
@@ -64,39 +61,40 @@ const WorkoutDetails = ({ workouts, onBack }) => {
   };
 
   // Function to save changes to the backend
-  const handleSaveChanges = async () => {
+  const handleSaveChanges = () => {
     if (!workoutData) return; // Ensure data exists
 
-    const payload = {
-      workout: {
-        date: workoutData.date,
-        workout_exercises_attributes: workoutData.workout_exercises.map((exercise) => ({
-          id: exercise.id,
-          exercise_id: exercise.exercise.id,
-          set_entries_attributes: exercise.set_entries
-            .filter((set) => !set._destroy || set.id) // Include only valid sets for backend
-            .map((set) => ({
-              id: set.id || null,
-              set_number: set.set_number,
-              reps: set.reps,
-              weight: set.weight,
-              _destroy: set._destroy || false,
-            })),
+     // Prepare the payload
+  const payload = {
+    workout: {
+      date: workoutData.date, // Ensure other top-level fields are included
+      workout_exercises_attributes: workoutData.workout_exercises.map((exercise) => ({
+        id: exercise.id, // Include the exercise ID
+        exercise_id: exercise.exercise.id, // Include linked exercise ID
+        set_entries_attributes: exercise.set_entries.map((set) => ({
+          id: set.id !== undefined ? set.id : null, // Include set ID if it exists, null for new
+          set_number: set.set_number, // Ensure set_number is included
+          reps: set.reps, // Ensure reps are included
+          weight: set.weight, // Ensure weight is included
+          _destroy: set._destroy
         })),
-      },
-    };
+      })),
+    },
+  };
 
-    try {
-      const response = await axios.put(
+
+    axios
+      .put(
         `${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts/${workoutData.id}`,
         payload
-      );
-      setWorkoutData(response.data); // Sync state with backend response
-      setEditMode(false); // Exit edit mode
-    } catch (error) {
-      console.error("Error saving workout:", error);
-      setErrors("Failed to save changes. Please try again.");
-    }
+      )
+      .then(() => {
+        setEditMode(false); // Exit edit mode on successful save
+      })
+      .catch((error) => {
+        console.error("Error saving workout:", error);
+        setErrors("Failed to save changes. Please try again.");
+      });
   };
 
   // Function to handle deleting the workout
@@ -150,47 +148,45 @@ const WorkoutDetails = ({ workouts, onBack }) => {
                 </tr>
               </thead>
               <tbody>
-                {exercise.set_entries
-                  .filter((set) => !set._destroy) // Exclude sets marked for deletion
-                  .map((set) => (
-                    <tr key={set.id}>
-                      <td>
-                        <input
-                          type="number"
-                          value={set.reps}
-                          onChange={(e) =>
-                            handleInputChange(
-                              exercise.id,
-                              set.id,
-                              "reps",
-                              parseInt(e.target.value, 10)
-                            )
-                          }
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={set.weight}
-                          onChange={(e) =>
-                            handleInputChange(
-                              exercise.id,
-                              set.id,
-                              "weight",
-                              parseInt(e.target.value, 10)
-                            )
-                          }
-                        />
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => handleDeleteSet(exercise.id, set.id)}
-                        >
-                          X
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                {exercise.set_entries.map((set) => (
+                  <tr key={set.id}>
+                    <td>
+                      <input
+                        type="number"
+                        value={set.reps}
+                        onChange={(e) =>
+                          handleInputChange(
+                            exercise.id,
+                            set.id,
+                            "reps",
+                            parseInt(e.target.value, 10)
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        value={set.weight}
+                        onChange={(e) =>
+                          handleInputChange(
+                            exercise.id,
+                            set.id,
+                            "weight",
+                            parseInt(e.target.value, 10)
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => handleDeleteSet(exercise.id, set.id)}
+                      >
+                        X
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           ) : (
@@ -227,6 +223,7 @@ const WorkoutDetails = ({ workouts, onBack }) => {
       ) : (
         <button onClick={() => setEditMode(true)}>Edit Workout</button>
       )}
+      {/* Add the back button here */}
       <button onClick={onBack}>Back to Calendar</button>
     </div>
   );
