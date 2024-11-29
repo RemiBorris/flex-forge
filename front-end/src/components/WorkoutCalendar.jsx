@@ -22,6 +22,19 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
       });
   }, [userId]);
 
+
+  const handleWorkoutDeleted = (deletedDate) => {
+    try {
+      const updatedWorkoutMap = { ...workoutMap };
+      const dateKey = new Date(deletedDate).toISOString().split('T')[0]; // Convert to YYYY-MM-DD
+      delete updatedWorkoutMap[dateKey]; // Remove workout from the map
+      setWorkoutMap(updatedWorkoutMap); // Update the state to reflect the removal
+    } catch (error) {
+      // Log the error but continue execution
+      console.error("Error deleting workout due to invalid date:", error);
+    }
+  };
+
   // Render dots for workout days
   const tileContent = ({ date }) => {
     const dateKey = date.toISOString().split('T')[0];
@@ -34,7 +47,7 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
       {selectedDate && workoutMap[selectedDate.toISOString().split('T')[0]] ? (
         <WorkoutDetails
            workouts={workoutMap[selectedDate.toISOString().split('T')[0]]}
-          onBack={() => setSelectedDate(null)}
+          onBack={handleWorkoutDeleted}
         />
       ) : (
         <Calendar

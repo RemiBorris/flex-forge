@@ -116,7 +116,7 @@ const handleDeleteSet = (exerciseId, setId) => {
           `${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts/${workoutData.id}`
         )
         .then(() => {
-          onBack(); // Navigate back to the main page
+          onBack(workoutData.date); // Navigate back to the main page
         })
         .catch((error) => {
           console.error("Error deleting workout:", error);
