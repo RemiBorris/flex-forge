@@ -80,7 +80,9 @@ class WorkoutsController < ApplicationController
   # UPDATE action - edit an existing workout
   def update
     if @workout.update(workout_params)
-      render json: @workout
+      render json: @workout.as_json(include: { 
+  workout_exercises: { include: :set_entries } 
+})
     else
       render json: @workout.errors, status: :unprocessable_entity
     end
@@ -108,7 +110,8 @@ class WorkoutsController < ApplicationController
       workout_exercises_attributes: [
         :id, #include workout_exercise ID
         :exercise_id, 
-        set_entries_attributes: [ :id, :set_number, :reps, :weight, :destroy]
+        :_destroy,
+        set_entries_attributes: [ :id, :set_number, :reps, :weight, :_destroy]
       ]
     )
   end
