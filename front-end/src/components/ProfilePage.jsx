@@ -14,9 +14,10 @@ import {
   LinearScale,
   PointElement,
 } from "chart.js";
+import autocolors from "chartjs-plugin-autocolors";
 
 // Register Chart.js components
-ChartJS.register(LineElement, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement);
+ChartJS.register(LineElement, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, autocolors);
 
 const ProfilePage = ({ onNavigateToLanding }) => {
   // Profile state
@@ -33,8 +34,8 @@ const ProfilePage = ({ onNavigateToLanding }) => {
   }); // Track original data for comparison
 
   const [exerciseData, setExerciseData] = useState([]);
-  const [selectedExercises, setSelectedExercises] = useState({});
   const [chartData, setChartData] = useState(null);
+  const [areAllVisible, setAreAllVisible] = useState(true);
 
   // Fetch exercise data
   useEffect(() => {
@@ -42,15 +43,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
       .get(`${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts/exercise_summary`)
       .then((response) => {
         const data = response.data;
-
-        // Initialize selectedExercises with all exercises set to true
-        const initialSelectedExercises = {};
-        data.forEach((entry) => {
-          initialSelectedExercises[entry.exercise_id] = true;
-        });
-
         setExerciseData(data);
-        setSelectedExercises(initialSelectedExercises);
       })
       .catch((error) => console.error("Error fetching exercise data:", error));
   }, []);
@@ -76,17 +69,15 @@ const ProfilePage = ({ onNavigateToLanding }) => {
 
       // Generate datasets for the chart
       const datasets = Object.keys(groupedData)
-        .filter((exerciseId) => selectedExercises[exerciseId]) // Only include selected exercises
         .map((exerciseId, index) => {
           const { name, avgWeights } = groupedData[exerciseId];
 
           return {
             label: name,
             data: avgWeights,
-            borderColor: `hsl(${index * 50}, 70%, 50%)`, // Unique color for each exercise
-            backgroundColor: `hsl(${index * 50}, 70%, 70%)`,
             tension: 0.3, // Smooth curves
             fill: false,
+            hidden: !areAllVisible,
           };
         });
 
@@ -95,14 +86,8 @@ const ProfilePage = ({ onNavigateToLanding }) => {
         datasets,
       });
     }
-  }, [exerciseData, selectedExercises]);
+  }, [exerciseData, areAllVisible]);
 
-  const handleToggleExercise = (exerciseId) => {
-    setSelectedExercises((prev) => ({
-      ...prev,
-      [exerciseId]: !prev[exerciseId],
-    }));
-  };
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -141,6 +126,10 @@ const ProfilePage = ({ onNavigateToLanding }) => {
     } else {
       onNavigateToLanding();
     }
+  };
+
+  const toggleAllVisibility = () => {
+    setAreAllVisible((prevState) => !prevState);
   };
 
   return (
@@ -232,53 +221,45 @@ const ProfilePage = ({ onNavigateToLanding }) => {
       {/* Exercise Summary Section */}
       <div style={{ marginTop: "40px" }}>
         <h1>Exercise Summary (Last 30 Days)</h1>
-        <div>
-          <h3>Toggle Exercises:</h3>
-          {Object.entries(selectedExercises).map(([exerciseId, isSelected]) => {
-            const exerciseName = exerciseData.find((entry) => entry.exercise_id === parseInt(exerciseId))?.exercise_name;
-            return (
-              <label key={exerciseId} style={{ marginRight: "10px" }}>
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  onChange={() => handleToggleExercise(exerciseId)}
-                />
-                {exerciseName}
-              </label>
-            );
-          })}
-        </div>
         {chartData ? (
-          <Line
-            data={chartData}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: "top",
-                },
-                title: {
-                  display: true,
-                  text: "Average Weight Over Time by Exercise",
-                },
-              },
-              scales: {
-                x: {
+          <div>
+            <Line
+              data={chartData}
+              options={{
+                responsive: true,
+                plugins: {
+                  autocolors: {
+                    mode: 'dataset'
+                  },
+                  legend: {
+                    position: "right",
+                  },
                   title: {
                     display: true,
-                    text: "Date",
+                    text: "Average Weight Over Time by Exercise",
                   },
                 },
-                y: {
-                  title: {
-                    display: true,
-                    text: "Average Weight (lbs)",
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: "Date",
+                    },
                   },
-                  beginAtZero: true,
+                  y: {
+                    title: {
+                      display: true,
+                      text: "Average Weight (lbs)",
+                    },
+                    beginAtZero: true,
+                  },
                 },
-              },
-            }}
-          />
+              }}
+            />
+            <button onClick={toggleAllVisibility}>
+              {areAllVisible ? "Hide All Exercises" : "Show All Exercises"}
+            </button>
+          </div>
         ) : (
           <p>Loading chart...</p>
         )}
