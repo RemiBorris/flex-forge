@@ -26,7 +26,7 @@ const WorkoutDetails = ({ workouts, onBack }) => {
     const exercise = updatedWorkout.workout_exercises.find(
       (ex) => ex.id === exerciseId
     );
-    exercise.set_entries.push({ reps: 0, weight: 0, id: Date.now() }); // Temporary ID for new set
+    exercise.set_entries.push({ reps: 0, weight: 0, set_number: exercise.set_entries.length + 1 }); // Temporary ID for new set
     setWorkoutData(updatedWorkout);
   };
 
@@ -83,7 +83,7 @@ const handleDeleteSet = (exerciseId, setId) => {
         id: exercise.id, // Include the exercise ID
         exercise_id: exercise.exercise.id, // Include linked exercise ID
         set_entries_attributes: exercise.set_entries.map((set) => ({
-          id: set.id !== undefined ? set.id : null, // Include set ID if it exists, null for new
+          id: set.id ? set.id : null, // Include set ID if it exists, null for new
           set_number: set.set_number, // Ensure set_number is included
           reps: set.reps, // Ensure reps are included
           weight: set.weight, // Ensure weight is included
