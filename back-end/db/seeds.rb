@@ -158,4 +158,134 @@ static_dates.each_with_index do |date, index|
 end
 
 
+
+# ---------------------------
+
+pectoral_exercises = Exercise.where(muscle_group: "pectorals").first(6)
+
+
+# Iterate over all users
+User.find_each do |user|
+  # Create a workout routine for each user
+  chest_routine = Workout.create!(
+    user: user,
+    isRoutine: true, # Mark as a routine
+    routine_name: "Pectoral Blast", # Provide a meaningful name for the routine
+    notes: "Beast Mode Pec Exercises"
+  )
+
+  # Add workout exercises and associated set entries to the routine
+  pectoral_exercises.each_with_index do |exercise, index|
+    workout_exercise = chest_routine.workout_exercises.create!(
+      exercise: exercise
+    )
+
+    # Add 3 sets for each exercise with varying reps and weights
+    3.times do |set_number|
+      workout_exercise.set_entries.create!(
+        set_number: set_number + 1,
+        reps: [8, 10, 12].sample, # Randomize reps between 8-12
+        weight: 50 + (index * 5) + (set_number * 2) # Increment weight slightly per set
+      )
+    end
+  end
+end
+
+# ---------------------------
+
+lats_exercises = Exercise.where(muscle_group: "lats").first(6)
+
+
+# Iterate over all users
+User.find_each do |user|
+  # Create a workout routine for each user
+  lats_routine = Workout.create!(
+    user: user,
+    isRoutine: true, # Mark as a routine
+    routine_name: "Lats for Days", # Provide a meaningful name for the routine
+    notes: "Killer Lats Coming Up"
+  )
+
+  # Add workout exercises and associated set entries to the routine
+  lats_exercises.each_with_index do |exercise, index|
+    workout_exercise = lats_routine.workout_exercises.create!(
+      exercise: exercise
+    )
+
+    # Add 3 sets for each exercise with varying reps and weights
+    3.times do |set_number|
+      workout_exercise.set_entries.create!(
+        set_number: set_number + 1,
+        reps: [8, 10, 12].sample, # Randomize reps between 8-12
+        weight: 50 + (index * 5) + (set_number * 2) # Increment weight slightly per set
+      )
+    end
+  end
+end
+
+# ---------------------------
+
+glutes_exercises = Exercise.where(muscle_group: "glutes").first(6)
+
+
+# Iterate over all users
+User.find_each do |user|
+  # Create a workout routine for each user
+  glutes_routine = Workout.create!(
+    user: user,
+    isRoutine: true, # Mark as a routine
+    routine_name: "Fill your Glutes", # Provide a meaningful name for the routine
+    notes: "Glutes attack"
+  )
+
+  # Add workout exercises and associated set entries to the routine
+  glutes_exercises.each_with_index do |exercise, index|
+    workout_exercise = glutes_routine.workout_exercises.create!(
+      exercise: exercise
+    )
+
+    # Add 3 sets for each exercise with varying reps and weights
+    3.times do |set_number|
+      workout_exercise.set_entries.create!(
+        set_number: set_number + 1,
+        reps: [8, 10, 12].sample, # Randomize reps between 8-12
+        weight: 50 + (index * 5) + (set_number * 2) # Increment weight slightly per set
+      )
+    end
+  end
+end
+
+
+# ---------------------------
+
+biceps_exercises = Exercise.where(muscle_group: "biceps").first(6)
+
+
+# Iterate over all users
+User.find_each do |user|
+  # Create a workout routine for each user
+  biceps_routine = Workout.create!(
+    user: user,
+    isRoutine: true, # Mark as a routine
+    routine_name: "Terminator Arms Incoming", # Provide a meaningful name for the routine
+    notes: "Arm Blast"
+  )
+
+  # Add workout exercises and associated set entries to the routine
+  biceps_exercises.each_with_index do |exercise, index|
+    workout_exercise = biceps_routine.workout_exercises.create!(
+      exercise: exercise
+    )
+
+    # Add 3 sets for each exercise with varying reps and weights
+    3.times do |set_number|
+      workout_exercise.set_entries.create!(
+        set_number: set_number + 1,
+        reps: [8, 10, 12].sample, # Randomize reps between 8-12
+        weight: 50 + (index * 5) + (set_number * 2) # Increment weight slightly per set
+      )
+    end
+  end
+end
+
 puts "Static seed data with static dates created successfully!"
