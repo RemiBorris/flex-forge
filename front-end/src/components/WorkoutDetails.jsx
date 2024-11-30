@@ -146,13 +146,16 @@ const renderWorkoutExercises = () => {
 
 const workoutExercisesForUI = renderWorkoutExercises();
 
+const workoutDate = new Date(workoutData.date);
+
 return (
   <div>
     <h2>Workout Details</h2>
     <p>
       <strong>Date:</strong>{" "}
       {workoutData.date
-        ? new Date(workoutData.date).toLocaleDateString()
+        ? new Date(workoutDate.getUTCFullYear(), workoutDate.getUTCMonth(), workoutDate.getUTCDate())
+        .toLocaleDateString('en-US')
         : "Unknown"}
       <br />
       <strong>Notes:</strong> {workoutData.notes}
