@@ -11,6 +11,14 @@ class WorkoutsController < ApplicationController
   end
 
   def show
+    # Ensure workout is loaded with the workout_exercises and set_entries associations
+    @workout = @user.workouts.includes(workout_exercises: :set_entries).find(params[:id])
+  
+    # Explicitly sort set_entries by set_number
+    @workout.workout_exercises.each do |workout_exercise|
+      workout_exercise.set_entries = workout_exercise.set_entries.order(:set_number)
+    end
+  
     render json: @workout.as_json(include: { 
       workout_exercises: { 
         include: [
@@ -20,6 +28,7 @@ class WorkoutsController < ApplicationController
       } 
     })
   end
+  
 
   # CREATE action for routines (remains the same)
   def create_routine
