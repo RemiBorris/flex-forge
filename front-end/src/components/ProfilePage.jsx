@@ -69,7 +69,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
 
       // Generate datasets for the chart
       const datasets = Object.keys(groupedData)
-        .map((exerciseId, index) => {
+        .map((exerciseId) => {
           const { name, avgWeights } = groupedData[exerciseId];
 
           return {
