@@ -23,17 +23,31 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
   }, [userId]);
 
 
-  const handleWorkoutDeleted = (deletedDate) => {
-    try {
+  const handleWorkoutDeleted = (deletedDate, isFullDeletion) => {
+    if (!deletedDate) return;
+  
+    if (isFullDeletion) {
+      // Remove the date entirely
       const updatedWorkoutMap = { ...workoutMap };
-      const dateKey = new Date(deletedDate).toISOString().split('T')[0]; // Convert to YYYY-MM-DD
-      delete updatedWorkoutMap[dateKey]; // Remove workout from the map
-      setWorkoutMap(updatedWorkoutMap); // Update the state to reflect the removal
-    } catch (error) {
-      // Log the error but continue execution
-      console.error("Error deleting workout due to invalid date:", error);
+      const dateKey = new Date(deletedDate).toISOString().split('T')[0];
+      delete updatedWorkoutMap[dateKey];
+      setWorkoutMap(updatedWorkoutMap);
+    } else {
+      // Just re-fetch workouts from the backend for the latest state
+      axios.get(`${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts`)
+        .then(({ data }) => {
+          const map = data.reduce((acc, workout) => {
+            const dateKey = new Date(workout.date).toISOString().split('T')[0];
+            acc[dateKey] = workout;
+            return acc;
+          }, {});
+          setWorkoutMap(map);
+        });
     }
   };
+  
+  
+  
 
   // Render dots for workout days
   const tileContent = ({ date }) => {
@@ -47,7 +61,10 @@ const WorkoutCalendar = ({ userId, onNavigateToLanding }) => {
       {selectedDate && workoutMap[selectedDate.toISOString().split('T')[0]] ? (
         <WorkoutDetails
            workouts={workoutMap[selectedDate.toISOString().split('T')[0]]}
-          onBack={handleWorkoutDeleted}
+           onBack={(deletedDate, isFullDeletion) => {
+            handleWorkoutDeleted(deletedDate, isFullDeletion);
+            setSelectedDate(null); // Reset the selected date to return to the calendar view
+          }}
         />
       ) : (
         <Calendar

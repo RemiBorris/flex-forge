@@ -52,7 +52,8 @@ const handleDeleteSet = (exerciseId, setId) => {
       return exercise;
     }),
   };
-
+  //preserve the workout's date upon set deletion
+  updatedWorkout.date = workoutData.date;
   setWorkoutData(updatedWorkout);
 };
 
@@ -116,7 +117,7 @@ const handleDeleteSet = (exerciseId, setId) => {
           `${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts/${workoutData.id}`
         )
         .then(() => {
-          onBack(workoutData.date); // Navigate back to the main page
+          onBack(workoutData.date, true); //signal a full workout deletion
         })
         .catch((error) => {
           console.error("Error deleting workout:", error);
@@ -245,7 +246,8 @@ return (
     ) : (
       <button onClick={() => setEditMode(true)}>Edit Workout</button>
     )}
-    <button onClick={onBack}>Back to Calendar</button>
+    <button onClick={() => onBack(workoutData.date, false)}>Back to Calendar</button>
+
   </div>
 );
 
