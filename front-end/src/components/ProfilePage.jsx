@@ -52,37 +52,45 @@ const ProfilePage = ({ onNavigateToLanding }) => {
   useEffect(() => {
     if (exerciseData.length > 0) {
       const groupedData = {};
-
-      // Group data by exercise_id
+      const allDates = new Set();
+  
+      // Group data by exercise_id and collect all dates
       exerciseData.forEach((entry) => {
         if (!groupedData[entry.exercise_id]) {
           groupedData[entry.exercise_id] = {
             name: entry.exercise_name,
-            dates: [],
-            avgWeights: [],
+            data: {}, // Use an object to map dates to avg_weights
           };
         }
-
-        groupedData[entry.exercise_id].dates.push(entry.workout_date.split("T")[0]); // Format date
-        groupedData[entry.exercise_id].avgWeights.push(entry.avg_weight);
+  
+        const date = entry.workout_date.split("T")[0]; // Format date
+        allDates.add(date);
+  
+        groupedData[entry.exercise_id].data[date] = entry.avg_weight;
       });
-
+  
+      // Sort all dates
+      const sortedDates = Array.from(allDates).sort();
+  
       // Generate datasets for the chart
-      const datasets = Object.keys(groupedData)
-        .map((exerciseId) => {
-          const { name, avgWeights } = groupedData[exerciseId];
-
-          return {
-            label: name,
-            data: avgWeights,
-            tension: 0.3, // Smooth curves
-            fill: false,
-            hidden: !areAllVisible,
-          };
-        });
-
+      const datasets = Object.keys(groupedData).map((exerciseId) => {
+        const { name, data } = groupedData[exerciseId];
+  
+        // Fill in missing dates with null
+        const exerciseDataPoints = sortedDates.map((date) => data[date] || null);
+  
+        return {
+          label: name,
+          data: exerciseDataPoints,
+          tension: 0.3, // Smooth curves
+          fill: false,
+          hidden: !areAllVisible,
+          spanGaps: true, 
+        };
+      });
+  
       setChartData({
-        labels: groupedData[Object.keys(groupedData)[0]].dates, // Use dates from any exercise
+        labels: sortedDates, // Use all sorted dates as labels
         datasets,
       });
     }
@@ -232,7 +240,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
                     mode: 'dataset'
                   },
                   legend: {
-                    position: "bottom",
+                    position: "right",
                   },
                   title: {
                     display: true,
