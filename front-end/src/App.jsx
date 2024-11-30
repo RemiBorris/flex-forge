@@ -5,9 +5,11 @@ import React, { useState } from "react"; // Import useState
 import NewRoutine from "./components/NewRoutine";
 import NewExercise from "./components/NewExercise";
 import ProfilePage from "./components/ProfilePage";
+import WorkoutDetails from "./components/WorkoutDetails";
 
 function App() {
   const [page, setPage] = useState('login'); // Manage navigation
+  const [selectedWorkout, setSelectedWorkout] = useState(null); // Selected workout
 
   const handleLogin = (id) => {
     setPage('landing'); // Navigate to Landing Page
@@ -20,6 +22,12 @@ function App() {
     localStorage.removeItem("userAvatar")
     setPage("login"); // Navigate to login page
   };
+
+  const handleNavigateToWorkoutDetails = (workout) => {
+    setSelectedWorkout(workout); // Set the selected workout
+    setPage('workoutDetails'); // Navigate to WorkoutDetails view
+  };
+
 
   const navigateToCalendar = () => setPage('calendar');
   const navigateToLanding = () => setPage('landing');
@@ -38,6 +46,8 @@ function App() {
           onNavigateToNewRoutine={navigateToNewRoutine}
           onNavigateToNewExercise={navigateToNewExercise}
           onNavigateToProfile={nagivateToProfilePage}
+          onNavigateToWorkoutDetails={handleNavigateToWorkoutDetails} // Navigate to WorkoutDetails
+          onNavigateToProfilePage={nagivateToProfilePage}
         />
       )}
       {page === "calendar" && (
@@ -58,6 +68,13 @@ function App() {
       {page === "profile" && (
         <ProfilePage
         onNavigateToLanding={navigateToLanding}
+        />
+      )}
+      {page === "workoutDetails" && selectedWorkout && (
+        <WorkoutDetails
+          workouts={selectedWorkout} // Pass the selected workout
+          onBack={navigateToCalendar} // Navigate back to calendar
+          onNavigateToLanding={navigateToLanding} // Navigate back to landing
         />
       )}
     </div>

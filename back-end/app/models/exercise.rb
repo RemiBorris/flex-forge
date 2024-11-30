@@ -3,6 +3,7 @@ class Exercise < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :api_key, uniqueness: true
   validate :description_is_array
+  validates :muscle_group, presence: true
 
   private
 

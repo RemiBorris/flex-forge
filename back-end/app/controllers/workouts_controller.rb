@@ -1,11 +1,13 @@
 class WorkoutsController < ApplicationController
-
   before_action :set_user
-  before_action :set_workout, only: [:show, :update, :destroy] #excludes index
+  before_action :set_workout, only: [:show, :update, :destroy]
 
   def index
-    workouts = @user.workouts.includes(workout_exercises: [:exercise, :set_entries]) # Include set_entries
-    render json: workouts
+    # Filter workouts to only include scheduled workouts (isRoutine: false)
+    scheduled_workouts = @user.workouts
+      .where(isRoutine: false)
+      .includes(workout_exercises: [:exercise, :set_entries])
+    render json: scheduled_workouts
   end
 
   def show
@@ -19,27 +21,81 @@ class WorkoutsController < ApplicationController
     })
   end
 
-  def create
-    workout = Workout.create(workout_params)
-    if workout.save
-      render json: workout, status: :created
+  # CREATE action for routines (remains the same)
+  def create_routine
+    @workout = @user.workouts.new(workout_params)
+    @workout.isRoutine = true  # Mark this workout as a routine
+
+    if @workout.save
+      render json: @workout.as_json(include: {
+        workout_exercises: {
+          include: :set_entries
+        }
+      }), status: :created
     else
-      render json: workout.errors, status: :unprocessable_entity
+      render json: @workout.errors, status: :unprocessable_entity
     end
   end
 
-  def update
-    workout = Workout.find(params[:id])
-    if workout.update(workout_params)
-      render json: workout
-    else
-      render json: workout.errors, status: :unprocessable_entity
+    # CREATE action for scheduled workouts
+    def create_scheduled_workout
+      
+      # Find the routine based on the provided routine_id
+      routine = @user.workouts.find_by(id: params[:routine_id], isRoutine: true)
+  
+      if routine.nil?
+        render json: { error: "Routine not found" }, status: :not_found
+        return
+      end
+  
+      # Create a new workout based on the routine's template
+      @workout = @user.workouts.new(
+        isRoutine: false,
+         routine_name: routine.routine_name,
+         date: params[:date]
+        )
+  
+      # Copy all workout exercises from the routine to the new workout
+      routine.workout_exercises.each do |workout_exercise|
+        @workout.workout_exercises.build(
+          exercise_id: workout_exercise.exercise_id,
+          set_entries_attributes: workout_exercise.set_entries.map do |set_entry|
+            {
+              set_number: set_entry.set_number,
+              reps: set_entry.reps,
+              weight: set_entry.weight
+            }
+          end
+        )
+      end
+  
+      if @workout.save
+        render json: @workout.as_json(include: { workout_exercises: { include: :set_entries } }), status: :created
+      else
+        render json: @workout.errors, status: :unprocessable_entity
+      end
     end
+  
+
+  # UPDATE action - edit an existing workout
+  def update
+    if @workout.update(workout_params)
+      render json: @workout.as_json(include: { 
+  workout_exercises: { include: :set_entries } 
+})
+    else
+      render json: @workout.errors, status: :unprocessable_entity
+    end
+  end
+
+  # Action to retrieve ONLY routines (those marked isRoutine: true)
+  def routines
+    routines = @user.workouts.where(isRoutine: true).includes(workout_exercises: [:exercise, :set_entries]) 
+    render json: routines
   end
 
   def destroy 
-    workout = Workout.find(params[:id])
-    workout.destroy
+    @workout.destroy
     head :no_content
   end
 
@@ -65,9 +121,20 @@ class WorkoutsController < ApplicationController
   end
 
   private
-  
+
   def workout_params
-    params.require(:workout).permit(:user_id, :date, :notes)
+    params.require(:workout).permit(
+      :user_id, 
+      :isRoutine, 
+      :routine_name,
+      :date,
+      workout_exercises_attributes: [
+        :id, #include workout_exercise ID
+        :exercise_id, 
+        :_destroy,
+        set_entries_attributes: [ :id, :set_number, :reps, :weight, :_destroy]
+      ]
+    )
   end
 
   def set_user
@@ -77,5 +144,4 @@ class WorkoutsController < ApplicationController
   def set_workout
     @workout = @user.workouts.find(params[:id])
   end
-  
 end

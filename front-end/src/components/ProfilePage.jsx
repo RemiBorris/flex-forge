@@ -232,7 +232,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
                     mode: 'dataset'
                   },
                   legend: {
-                    position: "right",
+                    position: "bottom",
                   },
                   title: {
                     display: true,

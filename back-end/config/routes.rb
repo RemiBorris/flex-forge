@@ -3,13 +3,19 @@ Rails.application.routes.draw do
   resources :users do
     resources :workouts do
       collection do
-        get 'exercise_summary' # New route to fetch summarized exercise data
+        get 'exercise_summary'  # Fetch summarized exercise data
+        get 'routines'          # Fetch routines
       end
-      resources :workout_exercises # Nested resources for workout_exercises
+
+      resources :workout_exercises, only: [:create] # Nested resources
     end
   end
 
-  # Additional resources
+  # Custom routes for creating routines and scheduled workouts
+  post '/users/:user_id/workouts/create_routine', to: 'workouts#create_routine'
+  post '/users/:user_id/workouts/create_scheduled_workout', to: 'workouts#create_scheduled_workout'
+
+
   resources :workouts
   resources :exercises
   resources :workout_exercises, only: [:create]
