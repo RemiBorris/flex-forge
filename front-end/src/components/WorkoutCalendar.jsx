@@ -22,7 +22,6 @@ const WorkoutCalendar = ({ onNavigateToLanding }) => {
       });
   }, []);
 
-
   const handleWorkoutDeleted = (deletedDate, isFullDeletion) => {
     if (!deletedDate) return;
   
@@ -45,9 +44,6 @@ const WorkoutCalendar = ({ onNavigateToLanding }) => {
         });
     }
   };
-  
-  
-  
 
   // Render dots for workout days
   const tileContent = ({ date }) => {
@@ -55,26 +51,30 @@ const WorkoutCalendar = ({ onNavigateToLanding }) => {
     return workoutMap[dateKey] ? <div className="dot" /> : null;
   };
 
+  // Updated onClickDay to navigate to LandingPage if the day is empty
+  const handleEmptyDayClick = (date) => {
+    const dateKey = date.toISOString().split('T')[0];
+    if (!workoutMap[dateKey]) {
+      onNavigateToLanding(dateKey); // Pass the selected date to LandingPage
+    } else {
+      setSelectedDate(date); // Open workout details if a workout exists
+    }
+  };
+
   return (
     <div>
       <button onClick={onNavigateToLanding}>Back to Landing Page</button>
       {selectedDate && workoutMap[selectedDate.toISOString().split('T')[0]] ? (
         <WorkoutDetails
-           workouts={workoutMap[selectedDate.toISOString().split('T')[0]]}
-           onBack={(deletedDate, isFullDeletion) => {
+          workouts={workoutMap[selectedDate.toISOString().split('T')[0]]}
+          onBack={(deletedDate, isFullDeletion) => {
             handleWorkoutDeleted(deletedDate, isFullDeletion);
             setSelectedDate(null); // Reset the selected date to return to the calendar view
           }}
         />
       ) : (
         <Calendar
-        onClickDay={(date) => {
-          const dateKey = date.toISOString().split('T')[0];
-          // Only set the selected date if there are workouts for that day
-          if (workoutMap[dateKey]) {
-            setSelectedDate(date);
-          }
-        }}
+          onClickDay={handleEmptyDayClick} // Updated to use the new handler
           tileContent={tileContent}
         />
       )}

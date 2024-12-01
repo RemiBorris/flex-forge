@@ -9,8 +9,9 @@ const LandingPage = ({
   onNavigateToNewExercise,
   onNavigateToWorkoutDetails,
   onNavigateToProfilePage,
-  onNavigateToEditRoutine
-    }) => {
+  onNavigateToEditRoutine,
+  selectedDate // Receive the selected date from props
+}) => {
   const [routines, setRoutines] = useState([]); // State to store the list of routines
 
   // Get the userId from localStorage
@@ -30,34 +31,22 @@ const LandingPage = ({
     fetchRoutines();
   }, [userId]); // Re-fetch routines whenever userId changes
 
-  // Handle deleting a routine (uncomment if needed)
-  /*const handleDeleteRoutine = async (routineId) => {
-    try {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/users/${userId}/workouts/${routineId}`);
-      setRoutines(routines.filter(routine => routine.id !== routineId)); // Remove routine from state
-      alert('Routine deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting routine:', error);
-      alert('Failed to delete routine');
-    }
-  };*/
-
   const handleRoutineClick = async (routine) => {
     try {
-      // Schedule the routine as a workout for today's date
-      const today = new Date().toISOString(); // Format date as YYYY-MM-DD
+      // Use the selected date passed from the calendar
+      const date = selectedDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
 
       console.log('Sending request with data:', {
         routine_id: routine.id,
-        date: today
+        date: date
       });
       
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/${userId}/workouts/create_scheduled_workout`, {
         routine_id: routine.id,
-        date: today,
+        date: date, // Use the selected date
       });
       const scheduledWorkout = response.data; // Get the newly created workout
-      alert(`Routine "${routine.routine_name}" scheduled for today!`);
+      alert(`Routine "${routine.routine_name}" scheduled for ${date}!`);
       
       // Navigate to the WorkoutDetails view with the scheduled workout
       onNavigateToWorkoutDetails(scheduledWorkout);
@@ -66,7 +55,6 @@ const LandingPage = ({
       alert('Failed to schedule routine');
     }
   };
-  
 
   return (
     <div>
@@ -98,4 +86,3 @@ const LandingPage = ({
 };
 
 export default LandingPage;
-
