@@ -13,7 +13,6 @@ function App() {
   const [selectedWorkout, setSelectedWorkout] = useState(null); // Selected workout
   const [selectedDate, setSelectedDate] = useState(null); // Track the clicked date
   const [selectedEditRoutine, setSelectedEditRoutine] = useState(null)
-  const [selectedDate, setSelectedDate] = useState(null); // Track the clicked date
 
   const handleLogin = (id) => {
     setPage("landing"); // Navigate to Landing Page
@@ -59,8 +58,6 @@ function App() {
           selectedDate={selectedDate ? new Date(selectedDate) : null} // Ensure selectedDate is always a Date object
           setSelectedDate={setSelectedDate} // Update the date
           onNavigateToEditRoutine={nagivateToEditRoutine}
-          selectedDate={selectedDate ? new Date(selectedDate) : null} // Ensure selectedDate is always a Date object
-          setSelectedDate={setSelectedDate} // Update the date
         />
       )}
       {page === "calendar" && (
