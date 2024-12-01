@@ -6,10 +6,12 @@ import NewRoutine from "./components/NewRoutine";
 import NewExercise from "./components/NewExercise";
 import ProfilePage from "./components/ProfilePage";
 import WorkoutDetails from "./components/WorkoutDetails";
+import EditRoutine from "./components/EditRoutine";
 
 function App() {
   const [page, setPage] = useState('login'); // Manage navigation
   const [selectedWorkout, setSelectedWorkout] = useState(null); // Selected workout
+  const [selectedEditRoutine, setSelectedEditRoutine] = useState(null)
 
   const handleLogin = (id) => {
     setPage('landing'); // Navigate to Landing Page
@@ -35,6 +37,11 @@ function App() {
   const navigateToNewExercise = () => setPage('newExercise');
   const nagivateToProfilePage = () => setPage('profile')
 
+  const nagivateToEditRoutine = (routineID) => {
+    setSelectedEditRoutine(routineID)
+    setPage('editRoutine')
+  };
+
   return (
     <div>
       {/* Render components based on the current page */}
@@ -48,6 +55,7 @@ function App() {
           onNavigateToProfile={nagivateToProfilePage}
           onNavigateToWorkoutDetails={handleNavigateToWorkoutDetails} // Navigate to WorkoutDetails
           onNavigateToProfilePage={nagivateToProfilePage}
+          onNavigateToEditRoutine={nagivateToEditRoutine}
         />
       )}
       {page === "calendar" && (
@@ -75,6 +83,12 @@ function App() {
           workouts={selectedWorkout} // Pass the selected workout
           onBack={navigateToCalendar} // Navigate back to calendar
           onNavigateToLanding={navigateToLanding} // Navigate back to landing
+        />
+      )}
+      {page === "editRoutine" && selectedEditRoutine &&(
+        <EditRoutine
+        routine={selectedEditRoutine}
+        onNavigateToLanding={navigateToLanding}
         />
       )}
     </div>

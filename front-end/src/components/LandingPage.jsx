@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Import axios for API calls
+import { FaEdit } from 'react-icons/fa';
 
 const LandingPage = ({
   onNavigateToCalendar,
@@ -7,7 +8,8 @@ const LandingPage = ({
   onNavigateToNewRoutine,
   onNavigateToNewExercise,
   onNavigateToWorkoutDetails,
-  onNavigateToProfilePage
+  onNavigateToProfilePage,
+  onNavigateToEditRoutine
     }) => {
   const [routines, setRoutines] = useState([]); // State to store the list of routines
 
@@ -82,6 +84,9 @@ const LandingPage = ({
             <button onClick={() => handleRoutineClick(routine)}>
               {routine.routine_name}
             </button>
+            <FaEdit
+            onClick={() => onNavigateToEditRoutine(routine.id)}
+            style={{ cursor: "pointer", color: "#555" }}/>
            {/* <button onClick={() => handleDeleteRoutine(routine.id)}> 
               Delete
         </button> */}

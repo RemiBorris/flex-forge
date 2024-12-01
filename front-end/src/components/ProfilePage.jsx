@@ -84,7 +84,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
           data: exerciseDataPoints,
           tension: 0.3, // Smooth curves
           fill: false,
-          hidden: !areAllVisible,
+          hidden: true,
           spanGaps: true, 
         };
       });

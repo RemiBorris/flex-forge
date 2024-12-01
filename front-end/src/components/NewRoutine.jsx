@@ -29,14 +29,9 @@ const NewRoutine = ({onNavigateToLanding}) =>{
       console.log('Fetching exercises for:', selectedMuscleGroup);  // Log selected muscle group
       const fetchExercisesForMuscleGroup = async () => {
         try {
-          console.log('Fetching from URL:', `${process.env.REACT_APP_API_URL}/exercises?muscle_group=${selectedMuscleGroup}`);
           const response = await axios.get(`${process.env.REACT_APP_API_URL}/exercises?muscle_group=${selectedMuscleGroup}`);
-          console.log('Fetched exercises:', response.data); // Log the fetched exercise
-          console.log('Fetched exercises data:', response.data); // Log the response data
         
           setAvailableExercises(response.data); // Assuming exercises returns a filtered list of exercises
-            // Check the state immediately after updating
-            console.log('State after setting availableExercises:', availableExercises);
         } catch (error) {
           console.error('Error fetching exercises:', error);
         }
@@ -44,7 +39,7 @@ const NewRoutine = ({onNavigateToLanding}) =>{
 
       fetchExercisesForMuscleGroup();
     }
-  }, [selectedMuscleGroup]);
+  }, [selectedMuscleGroup, availableExercises]);
   
 
   // Handle adding an exercise to the routine
@@ -67,7 +62,6 @@ const NewRoutine = ({onNavigateToLanding}) =>{
 
   // Handle save routine
   const handleSaveRoutine = async () => {
-    console.log('handleSaveRoutine called');
     
     const payload = {
       workout: {
@@ -85,7 +79,6 @@ const NewRoutine = ({onNavigateToLanding}) =>{
       }
     };
 
-    console.log('Payload being sent:', payload); // Log the payload to check its structure
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/${userId}/workouts/create_routine`, payload);
@@ -126,7 +119,6 @@ const NewRoutine = ({onNavigateToLanding}) =>{
             onChange={(e) => {
               const selectedGroup = e.target.value;
               setSelectedMuscleGroup(selectedGroup);
-              console.log('Selected Muscle Group:', selectedGroup); // Log the selected value
             }}
             required
           >
