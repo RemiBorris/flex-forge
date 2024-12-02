@@ -3,6 +3,7 @@ import { FaEdit } from "react-icons/fa"; // Importing edit icon for consistency
 import { RxAvatar } from "react-icons/rx"; // Importing the default avatar icon
 import avatars from "../images/avatars";
 import axios from "axios"; // For API requests
+import styles from '../styles/ProfilePage.module.css'
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,

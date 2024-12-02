@@ -5,7 +5,7 @@ html, body {
   height: 100%; /* Ensure full height for centering */
   width: 100%; /* Ensure full width */
   box-sizing: border-box;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Base styling for the body */
@@ -30,6 +30,7 @@ body {
   height: auto; /* Allow height to adjust dynamically */
   padding: 20px; /* Add padding for spacing */
   box-sizing: border-box; /* Include padding in size calculation */
+  overflow-y: auto;
 }
 
 

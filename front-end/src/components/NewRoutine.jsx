@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styles from '../styles/NewRoutine.module.css'
+
 
 const NewRoutine = ({onNavigateToLanding}) =>{
   const userId = localStorage.getItem('userId'); //get userId from localStorage
@@ -92,120 +94,127 @@ const NewRoutine = ({onNavigateToLanding}) =>{
   };
 
   return (
-    <div>
-
-      <button onClick={onNavigateToLanding}>Back to Landing Page</button>
-
-      <h1>Create a New Routine</h1>
-      
-      <form>
-        {/* Routine Name */}
-        <label>
-          Routine Name:
-          <input
-            type="text"
-            value={routineName}
-            onChange={(e) => setRoutineName(e.target.value)}
-            required
-          />
-        </label>
-
-
-        {/* Muscle Group Dropdown (hardcoded) */}
-        <label>
-          Select Muscle Group:
-          <select
-            value={selectedMuscleGroup}
-            onChange={(e) => {
-              const selectedGroup = e.target.value;
-              setSelectedMuscleGroup(selectedGroup);
-            }}
-            required
-          >
-            <option value="">-- Select --</option>
-            {muscleGroups.map((group, index) => (
-              <option key={index} value={group}>
-                {group}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        {/* Exercises Dropdown */}
-        {selectedMuscleGroup && (
-          <label>
-            Select Exercise:
+    <div className={styles.container}>
+      <button className={styles.backButton} onClick={onNavigateToLanding}>
+        Back to Landing Page
+      </button>
+      <div className={styles.scrollableContent}>
+        <h1
+          className={`${styles.header} ${
+            routine.length > 0 ? styles.hidden : ""
+          }`}
+        >
+          Create a New Routine
+        </h1>
+        <form className={styles.form}>
+          <label className={styles.label}>
+            Routine Name:
+            <input
+              type="text"
+              value={routineName}
+              onChange={(e) => setRoutineName(e.target.value)}
+              className={styles.input}
+            />
+          </label>
+          <label className={styles.label}>
+            Select Muscle Group:
             <select
-              value={selectedExercise ? selectedExercise.id : ''}
-              onChange={(e) => {
-                const exercise = availableExercises.find((ex) => ex.id === parseInt(e.target.value));
-                setSelectedExercise(exercise);
-              }}
-              required
+              value={selectedMuscleGroup}
+              onChange={(e) => setSelectedMuscleGroup(e.target.value)}
+              className={styles.select}
             >
               <option value="">-- Select --</option>
-              {availableExercises.map((exercise) => (
-                <option key={exercise.id} value={exercise.id}>
-                  {exercise.name}
+              {muscleGroups.map((group) => (
+                <option key={group} value={group}>
+                  {group}
                 </option>
               ))}
             </select>
           </label>
-        )}
-
-        {/* Sets, Reps, and Weight */}
-        {selectedExercise && (
-          <div>
-            <label>
-              Sets: 
-              <input 
-                type="number" 
-                value={sets} 
-                onChange={(e) => setSets(e.target.value)} 
-                min="1"
-              />
+          {selectedMuscleGroup && (
+            <label className={styles.label}>
+              Select Exercise:
+              <select
+                value={selectedExercise ? selectedExercise.id : ""}
+                onChange={(e) =>
+                  setSelectedExercise(
+                    availableExercises.find(
+                      (ex) => ex.id === parseInt(e.target.value)
+                    )
+                  )
+                }
+                className={styles.select}
+              >
+                <option value="">-- Select --</option>
+                {availableExercises.map((exercise) => (
+                  <option key={exercise.id} value={exercise.id}>
+                    {exercise.name}
+                  </option>
+                ))}
+              </select>
             </label>
-            <label>
-              Reps: 
-              <input 
-                type="number" 
-                value={reps} 
-                onChange={(e) => setReps(e.target.value)} 
-                min="1"
-              />
-            </label>
-            <label>
-              Weight (per set): 
-              <input 
-                type="number" 
-                value={weight} 
-                onChange={(e) => setWeight(e.target.value)} 
-                required
-              />
-            </label>
-
-            {/* Add Exercise Button */}
-            <button type="button" onClick={handleAddExercise}>
-              Add Exercise to Routine
-            </button>
+          )}
+          {selectedExercise && (
+            <div className={styles.form}>
+              <label className={styles.label}>
+                Sets:
+                <input
+                  type="number"
+                  value={sets}
+                  onChange={(e) => setSets(e.target.value)}
+                  className={styles.input}
+                />
+              </label>
+              <label className={styles.label}>
+                Reps:
+                <input
+                  type="number"
+                  value={reps}
+                  onChange={(e) => setReps(e.target.value)}
+                  className={styles.input}
+                />
+              </label>
+              <label className={styles.label}>
+                Weight:
+                <input
+                  type="number"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                  className={styles.input}
+                />
+              </label>
+              <button
+                type="button"
+                onClick={handleAddExercise}
+                className={styles.button}
+              >
+                Add Exercise
+              </button>
+            </div>
+          )}
+        </form>
+        <div className={styles.exercisesContainer}>
+          <div className={styles.exercisesList}>
+            {routine.map((exercise, index) => (
+              <div key={index} className={styles.exerciseItem}>
+                <p>{exercise.name}</p>
+                <p>
+                  Sets: {exercise.sets}, Reps: {exercise.reps}, Weight:{" "}
+                  {exercise.weight}
+                </p>
+              </div>
+            ))}
           </div>
-        )}
-
-        {/* Display Added Exercises */}
-        <h3>Selected Exercises:</h3>
-        {routine.map((exercise, index) => (
-          <div key={index}>
-            <p>{exercise.name}</p>
-            <p>Sets: {exercise.sets}, Reps: {exercise.reps}, Weight: {exercise.weight}</p>
-          </div>
-        ))}
-
-        {/* Save Routine */}
-        <button type="button" onClick={handleSaveRoutine}>Save Routine</button>
-      </form>
+        </div>
+        <button className={styles.button} onClick={handleSaveRoutine}>
+            Save Routine
+          </button>
+      </div>
     </div>
   );
-};
+            };
+
+
   
 
 export default NewRoutine;

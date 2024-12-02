@@ -1,0 +1,161 @@
+/* Main container for the page */
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  width: 100%; /* Full viewport width */
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #1e1e1e; /* Dark background */
+  color: #e0e0e0; /* Light text color */
+  font-family: 'Inter', sans-serif; /* Clean font */
+  overflow: hidden; /* Prevent horizontal scrolling */
+  position: relative; /* Ensure child positioning works */
+}
+
+/* Scrollable content */
+.scrollableContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Header */
+.header {
+  font-weight: 700;
+  font-size: 3rem;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Avatar Section */
+.avatarContainer {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-bottom: 10px;
+  border: 2px solid #1e88e5;
+}
+
+.avatarEditIcon {
+  cursor: pointer;
+  color: #555;
+  margin-left: 5px;
+  transition: color 0.3s ease;
+}
+
+.avatarEditIcon:hover {
+  color: #1e88e5;
+}
+
+/* Avatar Selection */
+.avatarSelection {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.avatarOption {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.avatarOption:hover {
+  border-color: #1e88e5;
+}
+
+.avatarOptionSelected {
+  border-color: #1e88e5;
+}
+
+/* Name Section */
+.nameContainer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nameInput {
+  padding: 10px;
+  font-size: 1.2rem;
+  border: 1px solid #555;
+  border-radius: 8px;
+  background-color: #1b76af;
+  color: #e0e0e0;
+  margin-right: 10px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.nameEditIcon {
+  cursor: pointer;
+  color: #555;
+  margin-left: 10px;
+  transition: color 0.3s ease;
+}
+
+.nameEditIcon:hover {
+  color: #1e88e5;
+}
+
+/* Button styles */
+.button {
+  width: 100%;
+  max-width: 600px;
+  padding: 15px;
+  background-color: #1e88e5;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px #000;
+  margin-bottom: 20px;
+}
+
+.button:hover {
+  background-color: #1565c0; /* Slightly darker blue on hover */
+}
+
+/* Chart Section */
+.chartContainer {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.chartTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.chartLoading {
+  font-size: 1.2rem;
+  color: #aaa;
+}

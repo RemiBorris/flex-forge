@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {getExerciseByName} from '../routes/exercise_api'
 import { saveExerciseToDatabase } from '../routes/database_routes';
+import styles from '../styles/NewExercise.module.css'
 
 
 const NewExercise = ({onNavigateToLanding}) => {
@@ -32,27 +33,37 @@ const NewExercise = ({onNavigateToLanding}) => {
     }
   };
 
-  return(
-    <div>
-      <button onClick={onNavigateToLanding}>Back to Landing Page</button>
-      <h1>Add New Exercise</h1>
-      <input type='text' value={query} onChange={handleInputChange} placeholder='Exercise Name'></input>
-      <button onClick={handleSearch}>Search</button>
-      <h3>Search Results:</h3>
-      <ul>
+  return (
+    <div className={styles.container}>
+      <button className={styles.backButton} onClick={onNavigateToLanding}>
+        Back to Landing Page
+      </button>
+      <h1 className={styles.header}>Add New Exercise</h1>
+      <input
+        type="text"
+        value={query}
+        onChange={handleInputChange}
+        placeholder="Exercise Name"
+        className={styles.input}
+      />
+      <button onClick={handleSearch} className={styles.button}>
+        Search
+      </button>
+      <h3 className={styles.header}>Search Results:</h3>
+      <div className={styles.listContainer}>
         {queryResults.map((result) => (
-          <li 
-          key={result.id}
-          onClick={() => handleExerciseClick(result)}
-          style={{cursor: 'pointer'}}
+          <div
+            key={result.id}
+            onClick={() => handleExerciseClick(result)}
+            className={styles.listItem}
           >
             {result.name}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
-    
-  )
-}
+  );
+};
+  
 
 export default NewExercise;
