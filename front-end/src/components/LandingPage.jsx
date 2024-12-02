@@ -34,7 +34,9 @@ const LandingPage = ({
   const handleRoutineClick = async (routine) => {
     try {
       // Use the selected date passed from the calendar
-      const date = selectedDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+      const today = new Date()
+      let date = selectedDate || today
+      date = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
 
       console.log('Sending request with data:', {
         routine_id: routine.id,
