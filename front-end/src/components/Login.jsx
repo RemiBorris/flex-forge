@@ -46,6 +46,7 @@ const Login = ({ onLogin }) => {
         />
         <input type="password" className="input-field" placeholder="Enter Password" />
         <button className="login-btn" onClick={handleLogin}>Login</button>
+        <button className="login-btn">Register</button>
         
       </div>
     </div>
