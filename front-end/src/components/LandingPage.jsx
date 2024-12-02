@@ -102,7 +102,7 @@ const LandingPage = ({
         ))}
       </ul>
       <button className="landing-btn" onClick={onNavigateToNewRoutine}>
-      <PlusCircleIcon style={{ width: '34px', height: '34px', color: 'white' }} />
+      <PlusCircleIcon style={{ width: '44px', height: '44px', color: 'white' }} />
       </button>
       <button className="landing-btn" onClick={onNavigateToNewExercise}>Create New Exercise</button>
     </div>
