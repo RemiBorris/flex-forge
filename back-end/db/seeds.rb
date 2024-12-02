@@ -16,8 +16,8 @@ SetEntry.destroy_all
 
 # Create two users
 users = [
-  User.create!(name: 'Alice Johnson', email: 'alice@example.com', avatar: 'https://via.placeholder.com/150'),
-  User.create!(name: 'Bob Smith', email: 'bob@example.com', avatar: 'https://via.placeholder.com/150')
+  User.create!(name: 'Johnny Bravo', email: 'bravo@johnny.com', avatar: ''),
+  User.create!(name: 'Bob Smith', email: 'bob@example.com', avatar: '')
 ]
 
 # Create exercises
@@ -126,7 +126,10 @@ static_dates = [
   '2024-10-19', '2024-10-22', '2024-10-25', # Week 3
   '2024-10-28', '2024-11-01', '2024-11-04', # Week 4
   '2024-11-07', '2024-11-10', '2024-11-13', # Week 5
-  '2024-11-16', '2024-11-19', '2024-11-22'  # Week 6
+  '2024-11-16', '2024-11-19', '2024-11-22', # Week 6
+  '2024-11-25', '2024-11-28', '2024-12-01', # Week 7
+  '2024-12-04', '2024-12-07', '2024-12-10', # Week 9
+  '2024-12-13', '2024-12-16', '2024-12-19', # Week 10
 ]
 
 # Generate workouts, workout_exercises, and set_entries
