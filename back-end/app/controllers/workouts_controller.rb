@@ -137,6 +137,7 @@ class WorkoutsController < ApplicationController
       :isRoutine, 
       :routine_name,
       :date,
+      :notes,
       workout_exercises_attributes: [
         :id, #include workout_exercise ID
         :exercise_id, 

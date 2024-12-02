@@ -36,7 +36,6 @@ const ProfilePage = ({ onNavigateToLanding }) => {
 
   const [exerciseData, setExerciseData] = useState([]);
   const [chartData, setChartData] = useState(null);
-  const [areAllVisible, setAreAllVisible] = useState(true);
 
   // Fetch exercise data
   useEffect(() => {
@@ -95,7 +94,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
         datasets,
       });
     }
-  }, [exerciseData, areAllVisible]);
+  }, [exerciseData]);
 
 
   const handleNameChange = (event) => {
@@ -137,9 +136,6 @@ const ProfilePage = ({ onNavigateToLanding }) => {
     }
   };
 
-  const toggleAllVisibility = () => {
-    setAreAllVisible((prevState) => !prevState);
-  };
 
   return (
     <div>
@@ -265,9 +261,6 @@ const ProfilePage = ({ onNavigateToLanding }) => {
                 },
               }}
             />
-            <button onClick={toggleAllVisibility}>
-              {areAllVisible ? "Hide All Exercises" : "Show All Exercises"}
-            </button>
           </div>
         ) : (
           <p>Loading chart...</p>
