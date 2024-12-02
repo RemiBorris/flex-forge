@@ -1,0 +1,164 @@
+/* Reset browser styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure full height for centering */
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Base styling for the body */
+body {
+  margin-top: 100px; /* Space below the nav bar */
+  background-color: #1e1e1e; /* Slightly lighter dark background */
+  color: #e0e0e0; /* Light gray text for contrast */
+  font-family: 'Inter', sans-serif; /* Modern, clean font */
+  height: auto; /* Allow height to adjust dynamically */
+  width: 100vw; /* Full viewport width */
+  overflow: hidden; /* Prevent unintended scrollbars */
+  padding: 20px; /* Add padding for spacing */
+  box-sizing: border-box;
+}
+
+.main-content {
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Stack children vertically */
+  justify-content: flex-start; /* Align content to the top */
+  align-items: center; /* Center content horizontally */
+  width: 100%; /* Full width of the viewport */
+  height: auto; /* Allow height to adjust dynamically */
+  padding: 20px; /* Add padding for spacing */
+  box-sizing: border-box; /* Include padding in size calculation */
+}
+
+
+/* Navigation Bar */
+.nav-bar {
+  position: fixed; /* Fix it relative to the viewport */
+  top: 0; /* Stick to the very top */
+  left: 0; /* Start from the left edge */
+  width: 100%; /* Full width of the viewport */
+  background-color: #ffffff; /* White background */
+  display: flex;
+  justify-content: space-around; /* Space buttons evenly */
+  align-items: center;
+  padding: 5px;
+  z-index: 100; /* Ensure it stays above other elements */
+  box-sizing: border-box;
+  border-bottom: 3px solid #1e1e1e; /* Dark bottom border */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+  overflow: hidden;
+}
+
+.nav-btn {
+  background-color: #065ca7; /* Bright blue */
+  color: #ffffff; /* White text */
+  border: none;
+  border-radius: 30px; /* Slightly rounded corners */
+  padding: 6px 12px; /* Adjust padding for smaller screens */
+  font-size: 0.9rem; /* Smaller font size */
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  flex: none; /* Prevent buttons from stretching */
+  margin: 0 5px; /* Add consistent spacing between buttons */
+  box-sizing: border-box; /* Include padding in width calculation */
+  transition: all 0.3s ease;
+}
+
+
+
+/* Header styling */
+.landing-header {
+  font-weight: 700;
+  font-size: 3.5rem; /* Larger header for prominence */
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 1px 1px 2px #000; /* Subtle shadow for sharpness */
+  -webkit-text-stroke: 1px #000; /* Black border around text */
+  margin-bottom: 20px; /* Spacing below the header */
+}
+
+/* Routines list */
+.routines-list {
+  width: 90%; /* Adjust list width */
+  flex-grow: 1; /* Allow the list to expand and shrink dynamically */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  justify-content: space-around; /* Distribute items evenly */
+  list-style: none;
+  padding: 0;
+  margin: 0 auto; /* Center the list horizontally */
+}
+
+.routines-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 20px; /* Increase padding for better spacing */
+  margin-bottom: 10px; /* Space between items */
+  font-size: 1.5rem; /* Larger font size for readability */
+  transition: all 0.3s ease;
+  flex: 1; /* Allow items to resize dynamically */
+}
+
+.routines-list li:last-child {
+  margin-bottom: 0; /* Remove bottom margin from the last item */
+}
+
+.routine-btn {
+  background-color: transparent;
+  color: #1e88e5;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.routine-btn:hover {
+  color: #1565c0; /* Match hover effect with main buttons */
+}
+
+/* Create New Routine Button */
+.landing-btn {
+  width: 80%; /* Match the list width */
+  padding: 20px; /* Larger padding for prominence */
+  background-color: #1e88e5; /* Bright professional blue */
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 2rem; /* Larger font size */
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 20px; /* Add space above the button */
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px #000; /* Subtle shadow for sharpness */
+}
+
+.landing-btn:hover {
+  background-color: #1565c0; /* Slightly darker blue on hover */
+}
+
+/* Media Query for Smaller Screens */
+@media (max-width: 767px) {
+  .nav-bar {
+    justify-content: space-between; /* Adjust spacing for smaller screens */
+    padding: 5px 10px; /* Reduce padding to save space */
+  }
+
+  .nav-btn {
+    padding: 6px 12px; /* Reduce padding for smaller buttons */
+    font-size: 0.9rem; /* Slightly smaller font size */
+    margin: 0 5px; /* Add consistent spacing between buttons */
+    flex: none; /* Prevent buttons from growing or shrinking */
+  }
+}

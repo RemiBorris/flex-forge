@@ -32,7 +32,7 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="main-container">
+    <div className="body">
       <header>
         <h1>Flex Forge</h1>
       </header>
@@ -46,6 +46,7 @@ const Login = ({ onLogin }) => {
         />
         <input type="password" className="input-field" placeholder="Enter Password" />
         <button className="login-btn" onClick={handleLogin}>Login</button>
+        <button className="login-btn">Register</button>
         
       </div>
     </div>
@@ -55,12 +56,5 @@ const Login = ({ onLogin }) => {
 export default Login;
 
 
-  //handling logout feature when we implement this elsewhere
-  /*const handleLogout = () => {
-    localStorage.removeItem('userId');
-    alert('user logged out');
-  }*/
-
-  //<button className="logout-btn" onClick={handleLogout}>Logout</button>
-
+  
  

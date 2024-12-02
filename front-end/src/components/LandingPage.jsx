@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Import axios for API calls
 import { FaEdit } from 'react-icons/fa';
+import '../styles/LandingPage.css';
+import { UserCircleIcon, CalendarDaysIcon, PlusCircleIcon } from '@heroicons/react/24/solid';
+import { MdLogout } from "react-icons/md";
+
+
+
 
 const LandingPage = ({
   onNavigateToCalendar,
@@ -57,30 +63,48 @@ const LandingPage = ({
   };
 
   return (
-    <div>
-      <h1>Welcome to Flex Forge</h1>
-      <button onClick={onNavigateToCalendar}>Go to Calendar</button>
-      <button onClick={onNavigateToNewRoutine}>Create New Routine</button>
-      <button onClick={onNavigateToNewExercise}>Create New Exercise</button>
-      <button onClick={onNavigateToProfilePage}>Profile Page</button>
-      <button onClick={onLogout}>Logout</button>
+    <div className="main-content">
+      
+      <nav className="nav-bar">
+
+      <button className="nav-btn" onClick={onNavigateToProfilePage}>
+      <UserCircleIcon style={{ width: '34px', height: '34px', color: 'white' }} />
+      </button>
+
+      <button className="nav-btn" onClick={onNavigateToCalendar}>
+      <CalendarDaysIcon style={{ width: '34px', height: '34px', color: 'white' }} />
+
+      </button>
+
+      <button className="nav-btn" onClick={onLogout}>
+      <MdLogout style={{ width: '34px', height: '34px', color: 'white' }} />
+      </button>
+      </nav>
+
+      
+      
 
       <h2>Your Routines:</h2>
-      <ul>
+      <ul className="routines-list">
         {routines.map((routine) => (
           <li key={routine.id}>
-            <button onClick={() => handleRoutineClick(routine)}>
+            <button
+              className="routine-btn"
+              onClick={() => handleRoutineClick(routine)}
+            >
               {routine.routine_name}
             </button>
             <FaEdit
-            onClick={() => onNavigateToEditRoutine(routine.id)}
-            style={{ cursor: "pointer", color: "#555" }}/>
-           {/* <button onClick={() => handleDeleteRoutine(routine.id)}> 
-              Delete
-        </button> */}
+              className="edit-icon"
+              onClick={() => onNavigateToEditRoutine(routine.id)}
+            />
           </li>
         ))}
       </ul>
+      <button className="landing-btn" onClick={onNavigateToNewRoutine}>
+      <PlusCircleIcon style={{ width: '34px', height: '34px', color: 'white' }} />
+      </button>
+      <button className="landing-btn" onClick={onNavigateToNewExercise}>Create New Exercise</button>
     </div>
   );
 };
