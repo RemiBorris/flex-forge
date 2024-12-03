@@ -1,8 +1,7 @@
 /* Reset styles scoped to the login-container */
 .login-container {
-  margin: 0;
-  padding: 0;
-  height: 80vh; /* Full viewport height */
+  padding: 20px 20;
+  margin: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center; /* Center content vertically */

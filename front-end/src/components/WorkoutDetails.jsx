@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import styles from '../styles/WorkoutDetails.module.css'
 
 const WorkoutDetails = ({ workouts, onBack }) => {
   const [editMode, setEditMode] = useState(false); // Tracks whether we are in edit mode
@@ -149,111 +150,121 @@ const workoutExercisesForUI = renderWorkoutExercises();
 const workoutDate = new Date(workoutData.date);
 
 return (
-  <div>
-    <h2>Workout Details</h2>
-    <p>
-      <strong>Date:</strong>{" "}
-      {workoutData.date
-        ? new Date(workoutDate.getUTCFullYear(), workoutDate.getUTCMonth(), workoutDate.getUTCDate())
-        .toLocaleDateString('en-US')
-        : "Unknown"}
-      <br />
-      <strong>Notes:</strong> {workoutData.notes}
-    </p>
+  <div className={styles.container}>
+    <button className={styles.backButton} onClick={() => onBack(workoutData.date, false)}>
+      Back to Calendar
+    </button>
+      <h2 className={styles.header}>Workout Details</h2>
+      <div className={styles.dateNotesContainer}>
+        <p>
+          <strong>Date:</strong>{" "}
+          {workoutDate
+            ? workoutDate.toLocaleDateString("en-US")
+            : "Unknown"}
+          <br />
+          <strong>Notes:</strong> {workoutData.notes}
+        </p>
+      </div>
+      <div className={styles.scrollableContent}>
+      {workoutExercisesForUI.map((exercise) => (
+        <div key={exercise.id} className={styles.exerciseContainer}>
+          <h4>{exercise.exercise.name}</h4>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Reps</th>
+                <th>Weight</th>
+                {editMode && <th>Actions</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {exercise.set_entries.map((set) => (
+                <tr key={set.id}>
+                  {editMode ? (
+                    <>
+                      <td>
+                        <input
+                          type="number"
+                          value={set.reps}
+                          onChange={(e) =>
+                            handleInputChange(
+                              exercise.id,
+                              set.id,
+                              "reps",
+                              parseInt(e.target.value, 10)
+                            )
+                          }
+                          className={styles.input}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          value={set.weight}
+                          onChange={(e) =>
+                            handleInputChange(
+                              exercise.id,
+                              set.id,
+                              "weight",
+                              parseInt(e.target.value, 10)
+                            )
+                          }
+                          className={styles.input}
+                        />
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => handleDeleteSet(exercise.id, set.id)}
+                          className={styles.button}
+                        >
+                          X
+                        </button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td>{set.reps}</td>
+                      <td>{set.weight} lbs</td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {editMode && (
+            <button
+              onClick={() => handleAddSet(exercise.id)}
+              className={styles.button}
+            >
+              Add New Set
+            </button>
+          )}
+        </div>
+      ))}
+  </div>
 
-    <h3>Exercises</h3>
-    {errors && <p style={{ color: "red" }}>{errors}</p>}
-    {workoutExercisesForUI.map((exercise) => (
-      <div key={exercise.id}>
-        <h4>{exercise.exercise.name}</h4>
+      <div className={styles.editButtonContainer}>
         {editMode ? (
-          <table>
-            <thead>
-              <tr>
-                <th>Reps</th>
-                <th>Weight</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {exercise.set_entries.map((set) => (
-                <tr key={set.id}>
-                  <td>
-                    <input
-                      type="number"
-                      value={set.reps}
-                      onChange={(e) =>
-                        handleInputChange(
-                          exercise.id,
-                          set.id,
-                          "reps",
-                          parseInt(e.target.value, 10)
-                        )
-                      }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      value={set.weight}
-                      onChange={(e) =>
-                        handleInputChange(
-                          exercise.id,
-                          set.id,
-                          "weight",
-                          parseInt(e.target.value, 10)
-                        )
-                      }
-                    />
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleDeleteSet(exercise.id, set.id)}
-                    >
-                      X
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className={styles.editModeButtons}>
+            <button onClick={handleSaveChanges} className={styles.editModeButton}>
+              Save Changes
+            </button>
+            <button onClick={() => setEditMode(false)} className={styles.editModeButton}>
+              Cancel
+            </button>
+            <button onClick={handleDeleteWorkout} className={styles.editModeButton}>
+              Delete Workout
+            </button>
+          </div>
         ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Reps</th>
-                <th>Weight</th>
-              </tr>
-            </thead>
-            <tbody>
-              {exercise.set_entries.map((set) => (
-                <tr key={set.id}>
-                  <td>{set.reps}</td>
-                  <td>{set.weight} lbs</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-        {editMode && (
-          <button onClick={() => handleAddSet(exercise.id)}>Add New Set</button>
+          <button onClick={() => setEditMode(true)} className={styles.button}>
+            Edit Workout
+          </button>
         )}
       </div>
-    ))}
-    {editMode ? (
-      <div>
-        <button onClick={handleSaveChanges}>Save Changes</button>
-        <button onClick={() => setEditMode(false)}>Cancel</button>
-        <button onClick={handleDeleteWorkout}>Delete Workout</button>
-      </div>
-    ) : (
-      <button onClick={() => setEditMode(true)}>Edit Workout</button>
-    )}
-    <button onClick={() => onBack(workoutData.date, false)}>Back to Calendar</button>
-
+    
   </div>
 );
-
 };
 
 export default WorkoutDetails;

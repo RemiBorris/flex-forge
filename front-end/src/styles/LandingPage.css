@@ -31,6 +31,12 @@ body {
   padding: 20px; /* Add padding for spacing */
   box-sizing: border-box; /* Include padding in size calculation */
   overflow-y: auto;
+  height: 85vh;
+  scrollbar-width: none;
+}
+
+.main-content::-webkit-scrollbar {
+  display: none; /* Completely hide the scrollbar */
 }
 
 
@@ -40,6 +46,7 @@ body {
   top: 0; /* Stick to the very top */
   left: 0; /* Start from the left edge */
   width: 100%; /* Full width of the viewport */
+  height: 10%;
   background-color: #ffffff; /* White background */
   display: flex;
   justify-content: space-around; /* Space buttons evenly */
@@ -50,13 +57,14 @@ body {
   border-bottom: 3px solid #1e1e1e; /* Dark bottom border */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
   overflow: hidden;
+  background-color: #827e7ea3;
 }
 
 .nav-btn {
   background-color: #065ca7; /* Bright blue */
   color: #ffffff; /* White text */
-  border: none;
-  border-radius: 30px; /* Slightly rounded corners */
+  border: 2px solid black;
+  border-radius: 50px; /* Slightly rounded corners */
   padding: 6px 12px; /* Adjust padding for smaller screens */
   font-size: 0.9rem; /* Smaller font size */
   font-weight: 600;
@@ -66,6 +74,8 @@ body {
   margin: 0 5px; /* Add consistent spacing between buttons */
   box-sizing: border-box; /* Include padding in width calculation */
   transition: all 0.3s ease;
+  height: 70px;
+  width: 70px;
 }
 
 
@@ -91,6 +101,7 @@ body {
   list-style: none;
   padding: 0;
   margin: 0 auto; /* Center the list horizontally */
+  overflow-y: auto;
 }
 
 .routines-list li {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaEdit } from "react-icons/fa";
+import styles from '../styles/EditRoutine.module.css'
 
 const EditRoutine = ({onNavigateToLanding, routine}) => { 
   const [routineData, setRoutineData] = useState(null);
@@ -207,118 +208,147 @@ const EditRoutine = ({onNavigateToLanding, routine}) => {
     };
 
   return (
-    <div>
-      <h2>Routine Details</h2>
-      {routineData ? (
-        <div>
-          <h3>
-            Routine Name{" "}
-            <FaEdit 
-            onClick={() => setIsEditingRoutineName(!isEditingRoutineName)}
-            />
-          </h3>
-          {isEditingRoutineName ? (
-            <input
-              type="text"
-              value={routineName}
-              onChange={handleRoutineNameChange}
-            />
-          ) : (
-            <h3>{routineName || ""}</h3>
-          )}
-          <h4>
-            Notes{" "}
-            <FaEdit
-            onClick={() => setIsEditingNotes(!isEditingNotes)}
-            />
-          </h4>
-          {isEditingNotes ? (
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={4}
-              style={{ width: "100%" }}
-            />
-          ) : (
-            <p>{notes || "No notes"}</p>
-          )}
-        </div>
-      ) : (
-        <p>Loading routine details...</p>
-      )}
+    <div className={styles.container}>
+      <button className={styles.backButton} onClick={onNavigateToLanding}>
+        Back to Landing Page
+      </button>
 
-      <h3>Exercises</h3>
-      {workoutExercisesForUI.map((exercise) => (
-        <div key={exercise.id}>
-          <h4>{exercise.exercise.name}</h4>
-          <button onClick={() => handleDeleteExercise(exercise.id)}>Delete</button>
-          <table>
-            <thead>
-              <tr>
-                <th>Reps</th>
-                <th>Weight</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {exercise.set_entries.map((set) => (
-                <tr key={set.id || set.tempKey}>
-                  <td>
-                    <input
-                      type="number"
-                      value={set.reps}
-                      onChange={(e) =>
-                        handleInputChange(
-                          exercise.id,
-                          set.id || set.tempKey,
-                          "reps",
-                          parseInt(e.target.value, 10)
-                        )
-                      }
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      value={set.weight}
-                      onChange={(e) =>
-                        handleInputChange(
-                          exercise.id,
-                          set.id || set.tempKey,
-                          "weight",
-                          parseInt(e.target.value, 10)
-                        )
-                      }
-                    />
-                  </td>
-                  <td>
-                    <button onClick={() => handleDeleteSet(exercise.id, set.id || set.tempKey)}>
-                      X
-                    </button>
-                  </td>
+      <div className={styles.scrollableContent}>
+        <h2 className={styles.header}>Edit Routine</h2>
+
+        {routineData ? (
+          <div className={styles.sectionContainer}>
+            <h3>
+              Routine Name{" "}
+              <FaEdit
+                onClick={() =>
+                  setIsEditingRoutineName(!isEditingRoutineName)
+                }
+              />
+            </h3>
+            {isEditingRoutineName ? (
+              <input
+                type="text"
+                value={routineName}
+                onChange={(e) => setRoutineName(e.target.value)}
+                className={styles.input}
+              />
+            ) : (
+              <p>{routineName || "No Name"}</p>
+            )}
+
+            <h4>
+              Notes{" "}
+              <FaEdit
+                onClick={() => setIsEditingNotes(!isEditingNotes)}
+              />
+            </h4>
+            {isEditingNotes ? (
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={4}
+                className={styles.input}
+              />
+            ) : (
+              <p>{notes || "No Notes"}</p>
+            )}
+          </div>
+        ) : (
+          <p>Loading routine details...</p>
+        )}
+
+        {workoutExercisesForUI.map((exercise) => (
+          <div key={exercise.id} className={styles.exerciseContainer}>
+            <h4 className={styles.exerciseHeader}>{exercise.exercise.name}</h4>
+            <table className={styles.table}>
+              <thead>
+                <tr>
+                  <th>Set</th>
+                  <th>Reps</th>
+                  <th>Weight</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <button onClick={() => handleAddSet(exercise.id)}>Add New Set</button>
-        </div>
-      ))}
+              </thead>
+              <tbody>
+                {exercise.set_entries.map((set, index) => (
+                  <tr key={set.id || set.tempKey}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <input
+                        type="number"
+                        value={set.reps}
+                        onChange={(e) =>
+                          handleInputChange(
+                            exercise.id,
+                            set.id || set.tempKey,
+                            "reps",
+                            parseInt(e.target.value, 10)
+                          )
+                        }
+                        className={styles.input}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        value={set.weight}
+                        onChange={(e) =>
+                          handleInputChange(
+                            exercise.id,
+                            set.id || set.tempKey,
+                            "weight",
+                            parseInt(e.target.value, 10)
+                          )
+                        }
+                        className={styles.input}
+                      />
+                    </td>
+                    <td>
+                      <button
+                        onClick={() =>
+                          handleDeleteSet(exercise.id, set.id || set.tempKey)
+                        }
+                        className={styles.button}
+                      >
+                        X
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <button
+              onClick={() => handleAddSet(exercise.id)}
+              className={styles.button}
+            >
+              Add Set
+            </button>
+            <button
+              onClick={() => handleDeleteExercise(exercise.id)}
+              className={styles.button}
+            >
+              Delete Exercise
+            </button>
+          </div>
+        ))}
 
-      <div>
-        {/* Button to toggle visibility of the "Add Exercise" section */}
-        <button onClick={() => setShowAddExercise(!showAddExercise)}>
+        <button
+          onClick={() => setShowAddExercise(!showAddExercise)}
+          className={styles.button}
+        >
           {showAddExercise ? "Cancel Add Exercise" : "Add Exercise"}
         </button>
 
-        {/* Conditionally render the "Add Exercise" section */}
         {showAddExercise && (
-          <div>
+          <div className={styles.sectionContainer}>
             <h3>Add Exercise</h3>
-            <label>
+            <label className={styles.label}>
               Select Muscle Group:
               <select
                 value={selectedMuscleGroup}
                 onChange={(e) => setSelectedMuscleGroup(e.target.value)}
+                className={styles.input}
               >
                 <option value="">-- Select --</option>
                 {muscleGroups.map((group, index) => (
@@ -330,16 +360,19 @@ const EditRoutine = ({onNavigateToLanding, routine}) => {
             </label>
 
             {selectedMuscleGroup && (
-              <label>
+              <label className={styles.label}>
                 Select Exercise:
                 <select
-                  value={selectedExercise ? selectedExercise.id : ''}
-                  onChange={(e) => {
-                    const exercise = availableExercises.find(
-                      (ex) => ex.id === parseInt(e.target.value, 10)
-                    );
-                    setSelectedExercise(exercise);
-                  }}
+                  value={selectedExercise ? selectedExercise.id : ""}
+                  onChange={(e) =>
+                    setSelectedExercise(
+                      availableExercises.find(
+                        (ex) =>
+                          ex.id === parseInt(e.target.value, 10)
+                      )
+                    )
+                  }
+                  className={styles.input}
                 >
                   <option value="">-- Select --</option>
                   {availableExercises.map((exercise) => (
@@ -351,16 +384,21 @@ const EditRoutine = ({onNavigateToLanding, routine}) => {
               </label>
             )}
 
-            <button onClick={handleAddExercise}>Add Exercise</button>
+            <button onClick={handleAddExercise} className={styles.button}>
+              Add Exercise
+            </button>
           </div>
         )}
       </div>
 
-      <div>
-        <button onClick={handleSaveChanges}>Save Changes</button>
-        <button onClick={handleDeleteRoutine}>Delete Routine</button>
+      <div className={styles.editModeButtons}>
+        <button onClick={handleSaveChanges} className={styles.button}>
+          Save Changes
+        </button>
+        <button onClick={handleDeleteRoutine} className={styles.button}>
+          Delete Routine
+        </button>
       </div>
-      <button onClick={onNavigateToLanding}>Back to Landing Page</button>
     </div>
   );
 };
