@@ -23,9 +23,9 @@
   margin-top: 20px;
   width: 100%; /* Full width */
   max-width: 1200px; /* Larger width for the chart */
-  height: 600px; /* Taller height for the chart */
+  height: 400px; /* Taller height for the chart */
   background-color: #2c2c2c; /* Match the page theme */
-  padding: 20px;
+  padding: 0px;
   border-radius: 10px;
   box-sizing: border-box;
   overflow: hidden;

@@ -1,12 +1,4 @@
-/* Reset browser styles */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%; /* Ensure full height for centering */
-  width: 100%; /* Ensure full width */
-  box-sizing: border-box;
-  overflow: hidden; /* Prevent horizontal scrolling */
-}
+
 
 /* Base styling for the body */
 body {

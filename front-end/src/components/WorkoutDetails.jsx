@@ -80,6 +80,7 @@ const handleDeleteSet = (exerciseId, setId) => {
   const payload = {
     workout: {
       date: workoutData.date, // Ensure other top-level fields are included
+      notes: workoutData.notes,
       workout_exercises_attributes: workoutData.workout_exercises.map((exercise) => ({
         id: exercise.id, // Include the exercise ID
         exercise_id: exercise.exercise.id, // Include linked exercise ID
@@ -156,15 +157,52 @@ return (
     </button>
       <h2 className={styles.header}>Workout Details</h2>
       <div className={styles.dateNotesContainer}>
-        <p>
-          <strong>Date:</strong>{" "}
-          {workoutDate
-            ? workoutDate.toLocaleDateString("en-US")
-            : "Unknown"}
-          <br />
-          <strong>Notes:</strong> {workoutData.notes}
-        </p>
-      </div>
+  {editMode ? (
+    <>
+      <label>
+        <strong>Date:</strong>
+        <input
+          type="date"
+          value={
+            workoutDate
+              ? workoutDate.toISOString().split("T")[0] // Format for <input type="date">
+              : ""
+          }
+          onChange={(e) =>
+            setWorkoutData({ ...workoutData, date: e.target.value })
+          }
+          className={styles.input}
+        />
+      </label>
+      <label>
+        <strong>Notes:</strong>
+        <textarea
+          value={workoutData.notes || ""}
+          onChange={(e) =>
+            setWorkoutData({ ...workoutData, notes: e.target.value })
+          }
+          className={styles.input}
+          rows={4}
+        />
+      </label>
+    </>
+  ) : (
+    <p>
+      <strong>Date:</strong>{" "}
+      {workoutDate
+        ? new Date(
+            workoutDate.getUTCFullYear(),
+            workoutDate.getUTCMonth(),
+            workoutDate.getUTCDate()
+          ).toLocaleDateString("en-US")
+        : "Unknown"}
+      <br />
+      <strong>Notes:</strong> {workoutData.notes || "No Notes"}
+    </p>
+  )}
+</div>
+
+
       <div className={styles.scrollableContent}>
       {workoutExercisesForUI.map((exercise) => (
         <div key={exercise.id} className={styles.exerciseContainer}>

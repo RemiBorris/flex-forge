@@ -1,81 +1,67 @@
-/* Reset styles scoped to the login-container */
+
 .login-container {
   padding: 20;
   margin: 0px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
-  box-sizing: border-box;
-  color: #e0e0e0; /* Light text color */
-  font-family: 'Inter', sans-serif; /* Clean font */
-  overflow: hidden; /* Prevent unintended scrollbars */
 }
 
-/* Header styling (Title) */
+
 header {
-  margin-bottom: 20px;
   font-weight: 700;
-  font-size: 3.5rem; /* Larger title */
+  font-size: 3.5rem; 
   text-align: center;
   color: #ffffff;
-  -webkit-text-stroke: 1px #000; /* Black border */
 }
 
-/* Input field styles */
+
 .input-field {
-  width: 100%; /* Full width */
-  padding: 20px; /* Larger padding */
-  background-color: #3b3b3b; /* Dark gray */
-  border: 1px solid #555; /* Neutral border */
+  width: 100%; 
+  background-color: #3b3b3b; 
+  border: 1px solid #555; 
   border-radius: 10px;
-  font-size: 1.6rem; /* Larger text */
+  font-size: 1.6rem; 
   color: #e0e0e0;
-  outline: none;
   margin-bottom: 20px;
   box-sizing: border-box;
-  text-shadow: 1px 1px 2px #000; /* Subtle shadow */
+  text-shadow: 1px 1px 2px #000; 
 }
 
-/* Button styles */
+
 .login-btn {
-  width: 100%; /* Full width */
-  padding: 20px; /* Larger padding */
-  background-color: #1e88e5; /* Bright blue */
+  width: 100%; 
+  background-color: #1e88e5; 
   color: #ffffff;
   border: none;
-  border-radius: 10px; /* Rounded corners */
-  font-size: 1.8rem; /* Larger text */
+  border-radius: 10px; 
+  font-size: 1.8rem; 
   font-weight: 600;
   cursor: pointer;
   text-align: center;
-  margin-top: 10px; /* Spacing */
-  transition: all 0.3s ease;
-  text-shadow: 1px 1px 2px #000; /* Subtle shadow */
+  margin-top: 10px; 
+  text-shadow: 1px 1px 2px #000; 
 }
 
 .login-btn:hover {
-  background-color: #1565c0; /* Darker blue */
+  background-color: #1565c0; 
 }
 
 /* Responsive design for mobile */
 @media (max-width: 767px) {
   .main-container {
-    width: 95%; /* Almost full width */
-    padding: 20px; /* Less padding */
+    width: 95%; 
+    padding: 20px; 
   }
 
   header {
-    font-size: 3rem; /* Slightly smaller */
+    font-size: 3rem; 
   }
 
   .input-field {
-    font-size: 1.5rem; /* Smaller text */
-    padding: 18px; /* Smaller padding */
+    font-size: 1.5rem; 
+    padding: 18px; 
   }
 
   .login-btn {
-    font-size: 1.7rem; /* Smaller text */
-    padding: 18px; /* Smaller padding */
+    font-size: 1.7rem; 
+    padding: 18px; 
   }
 }
