@@ -19,6 +19,8 @@ const LandingPage = ({
   selectedDate // Receive the selected date from props
 }) => {
   const [routines, setRoutines] = useState([]); // State to store the list of routines
+  const [avatar, setAvatar] = useState(localStorage.getItem("userAvatar") || null); // Retrieve avatar from localStorage
+
 
   // Get the userId from localStorage
   const userId = localStorage.getItem("userId");
@@ -70,8 +72,21 @@ const LandingPage = ({
       <nav className="nav-bar">
 
       <button className="nav-btn" onClick={onNavigateToProfilePage}>
-      <UserCircleIcon style={{ width: '34px', height: '34px', color: 'white' }} />
-      </button>
+          {avatar ? (
+            <img
+              src={avatar}
+              alt="User Avatar"
+              style={{
+                width: '34px',
+                height: '34px',
+                borderRadius: '50%', // Circular avatar
+                objectFit: 'cover', // Crop to fit the square
+              }}
+            />
+          ) : (
+            <UserCircleIcon style={{ width: '34px', height: '34px' }} />
+          )}
+        </button>
 
       <button className="nav-btn" onClick={onNavigateToCalendar}>
       <CalendarDaysIcon style={{ width: '34px', height: '34px', color: 'white' }} />

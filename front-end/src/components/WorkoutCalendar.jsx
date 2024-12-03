@@ -62,8 +62,8 @@ const WorkoutCalendar = ({ onNavigateToLanding }) => {
   };
 
   return (
-    <div>
-      <button onClick={onNavigateToLanding}>Back to Landing Page</button>
+    <div className="container">
+      <button className="button" onClick={onNavigateToLanding}>Back to Landing Page</button>
       {selectedDate && workoutMap[selectedDate.toISOString().split('T')[0]] ? (
         <WorkoutDetails
           workouts={workoutMap[selectedDate.toISOString().split('T')[0]]}
@@ -73,13 +73,16 @@ const WorkoutCalendar = ({ onNavigateToLanding }) => {
           }}
         />
       ) : (
-        <Calendar
-          onClickDay={handleEmptyDayClick} // Updated to use the new handler
-          tileContent={tileContent}
-        />
+        <div className="calendarContainer">
+          <Calendar
+            onClickDay={handleEmptyDayClick}
+            tileContent={tileContent}
+          />
+        </div>
       )}
     </div>
   );
+  
 };
 
 export default WorkoutCalendar;

@@ -36,6 +36,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
 
   const [exerciseData, setExerciseData] = useState([]);
   const [chartData, setChartData] = useState(null);
+  const [areAllVisible, setAreAllVisible] = useState(true);
 
   // Fetch exercise data
   useEffect(() => {
@@ -94,7 +95,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
         datasets,
       });
     }
-  }, [exerciseData]);
+  }, [exerciseData, areAllVisible]);
 
 
   const handleNameChange = (event) => {
@@ -136,10 +137,13 @@ const ProfilePage = ({ onNavigateToLanding }) => {
     }
   };
 
+  const toggleAllVisibility = () => {
+    setAreAllVisible((prevState) => !prevState);
+  };
 
   return (
     <div>
-      <button onClick={handleSave}>Back to Landing Page</button>
+      <button className={styles.button} onClick={handleSave}>Back to Landing Page</button>
 
       {/* Profile Section */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>
@@ -208,7 +212,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
                 onChange={handleNameChange}
                 style={{ marginRight: "10px" }}
               />
-              <button onClick={handleSaveName}>Save</button>
+              <button className={styles.button} onClick={handleSaveName}>Save</button>
             </div>
           ) : (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -224,7 +228,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
       </div>
 
       {/* Exercise Summary Section */}
-      <div style={{ marginTop: "40px" }}>
+      <div className={styles.chartContainer}>
         <h1>Exercise Summary (Last 30 Days)</h1>
         {chartData ? (
           <div>
@@ -261,6 +265,9 @@ const ProfilePage = ({ onNavigateToLanding }) => {
                 },
               }}
             />
+            <button className={styles.button} onClick={toggleAllVisibility}>
+              {areAllVisible ? "Hide All Exercises" : "Show All Exercises"}
+            </button>
           </div>
         ) : (
           <p>Loading chart...</p>

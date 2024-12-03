@@ -32,7 +32,7 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div className="body">
+    <div className="login-container">
       <header>
         <h1>Flex Forge</h1>
       </header>

@@ -1,13 +1,17 @@
-/* Reset browser styles */
-html, body {
+/* Reset styles scoped to the login-container */
+.login-container {
   margin: 0;
   padding: 0;
-  height: 100%; /* Full height */
-  width: 100%; /* Full width */
+  height: 80vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
   box-sizing: border-box;
-  overflow: hidden; /* Prevent scrollbars */
+  color: #e0e0e0; /* Light text color */
+  font-family: 'Inter', sans-serif; /* Clean font */
+  overflow: hidden; /* Prevent unintended scrollbars */
 }
-
 
 /* Header styling (Title) */
 header {
