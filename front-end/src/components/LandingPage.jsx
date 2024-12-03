@@ -71,6 +71,7 @@ const LandingPage = ({
       
       <nav className="nav-bar">
 
+      <h3>{localStorage.userName}</h3>
       <button className="nav-btn" onClick={onNavigateToProfilePage}>
           {avatar ? (
             <img
@@ -97,9 +98,6 @@ const LandingPage = ({
       <MdLogout style={{ width: '34px', height: '34px', color: 'white' }} />
       </button>
       </nav>
-
-      
-      
 
       <h2>Your Routines:</h2>
       <ul className="routines-list">

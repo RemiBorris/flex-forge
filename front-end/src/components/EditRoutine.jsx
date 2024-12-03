@@ -264,7 +264,6 @@ const EditRoutine = ({onNavigateToLanding, routine}) => {
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>Set</th>
                   <th>Reps</th>
                   <th>Weight</th>
                   <th>Actions</th>
@@ -273,7 +272,6 @@ const EditRoutine = ({onNavigateToLanding, routine}) => {
               <tbody>
                 {exercise.set_entries.map((set, index) => (
                   <tr key={set.id || set.tempKey}>
-                    <td>{index + 1}</td>
                     <td>
                       <input
                         type="number"
