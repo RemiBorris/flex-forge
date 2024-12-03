@@ -71,7 +71,7 @@ const LandingPage = ({
       
       <nav className="nav-bar">
 
-      <h3>{localStorage.userName}</h3>
+
       <button className="nav-btn" onClick={onNavigateToProfilePage}>
           {avatar ? (
             <img
@@ -99,7 +99,7 @@ const LandingPage = ({
       </button>
       </nav>
 
-      <h2>Your Routines:</h2>
+      <h2>{localStorage.userName}'s Routines:</h2>
       <ul className="routines-list">
         {routines.map((routine) => (
           <li key={routine.id}>

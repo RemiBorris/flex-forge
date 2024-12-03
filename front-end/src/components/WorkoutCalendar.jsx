@@ -63,7 +63,7 @@ const WorkoutCalendar = ({ onNavigateToLanding }) => {
 
   return (
     <div className="container">
-      <button className="button" onClick={onNavigateToLanding}>Back to Landing Page</button>
+      <button className="button" onClick={onNavigateToLanding}>Back</button>
       {selectedDate && workoutMap[selectedDate.toISOString().split('T')[0]] ? (
         <WorkoutDetails
           workouts={workoutMap[selectedDate.toISOString().split('T')[0]]}

@@ -1,13 +1,13 @@
-/* Style for the dot */
+
 .dot {
   height: 10px;
   width: 10px;
-  background-color: rgb(17, 92, 172); /* Change to any color you want */
+  background-color: rgb(17, 92, 172); 
   border-radius: 50%;
-  margin: 0 auto; /* Center the dot inside the tile */
+  margin: 0 auto; 
 }
 
-/* Optional: Style for the calendar container to center the content */
+
 .react-calendar {
   max-width: 400px;
   margin: 0 auto;
@@ -17,14 +17,14 @@
 
 
 
-/* Calendar container */
+
 .calendarContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 600px;
-  height: 70vh; /* Make the calendar take up most of the page */
+  height: 70vh; 
   background-color: #294a72;
   border-radius: 10px;
   padding: 20px;
@@ -32,14 +32,14 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-/* Adjust the size of calendar tiles */
+
 .react-calendar__tile {
-  height: 65px; /* Increase the height of tiles */
+  height: 65px; 
 }
 
 
 .react-calendar__tile:hover {
-  background-color: #4b4b4b; /* Slightly lighter on hover */
+  background-color: #4b4b4b; 
 }
 
 
@@ -47,8 +47,8 @@
   margin-top: -20px;
   align-self: flex-start;
   padding: 10px 20px;
-  background-color: #0f69b7; /* Blue background */
-  color: #ffffff; /* White text */
+  background-color: #0f69b7; 
+  color: #ffffff; 
   border: none;
   border-radius: 8px;
   font-size: 1.2rem;

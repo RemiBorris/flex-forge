@@ -1,6 +1,6 @@
 
 
-/* Base styling for the body */
+
 body {
   margin-top: 80px; 
   background-color: #1e1e1e; 
@@ -33,7 +33,7 @@ body {
   top: 0; 
   left: 0; 
   width: 100%; 
-  height: 10%;
+  height: 13%;
   background-color: #ffffff; 
   display: flex;
   justify-content: space-around; 
@@ -47,22 +47,40 @@ body {
   background-color: #827e7ea3;
 }
 
+.nav-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align the username and button */
+  justify-content: center; /* Align vertically within the navbar */
+  height: 20%;
+
+}
+
+.username {
+  font-size: 0.8rem; /* Small text size */
+  color: #ffffff;
+  margin-top: 1px; /* Add spacing between button and text */
+  text-align: center;
+}
+
 .nav-btn {
   background-color: #065ca7; 
   color: #ffffff; 
   border: 2px solid black;
   border-radius: 50px; 
-  padding: 6px 12px; 
   font-size: 0.9rem; 
   font-weight: 600;
   cursor: pointer;
   text-align: center;
   flex: none; 
-  margin: 0 5px; 
   box-sizing: border-box; 
   transition: all 0.3s ease;
   height: 70px;
   width: 70px;
+}
+
+.nav-btn:not(:first-child) {
+  margin-top: -10px; /* Adjust the value as needed */
 }
 
 
@@ -118,38 +136,38 @@ body {
 }
 
 
-/* Create New Routine Button */
+
 .landing-btn {
-  width: 80%; /* Match the list width */
-  padding: 20px; /* Larger padding for prominence */
-  background-color: #1e88e5; /* Bright professional blue */
+  width: 80%; 
+  padding: 20px; 
+  background-color: #1e88e5; 
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  font-size: 2rem; /* Larger font size */
+  font-size: 2rem; 
   font-weight: 600;
   cursor: pointer;
   text-align: center;
-  margin-top: 20px; /* Add space above the button */
+  margin-top: 20px; 
   transition: all 0.3s ease;
-  text-shadow: 1px 1px 2px #000; /* Subtle shadow for sharpness */
+  text-shadow: 1px 1px 2px #000; 
 }
 
 .landing-btn:hover {
-  background-color: #1565c0; /* Slightly darker blue on hover */
+  background-color: #1565c0; 
 }
 
 /* Media Query for Smaller Screens */
 @media (max-width: 767px) {
   .nav-bar {
-    justify-content: space-between; /* Adjust spacing for smaller screens */
-    padding: 5px 10px; /* Reduce padding to save space */
+    justify-content: space-between; 
+    padding: 5px 10px; 
   }
 
   .nav-btn {
-    padding: 6px 12px; /* Reduce padding for smaller buttons */
-    font-size: 0.9rem; /* Slightly smaller font size */
-    margin: 0 5px; /* Add consistent spacing between buttons */
-    flex: none; /* Prevent buttons from growing or shrinking */
+    padding: 6px 12px; 
+    font-size: 0.9rem; 
+    margin: 0 5px; 
+    flex: none; 
   }
 }

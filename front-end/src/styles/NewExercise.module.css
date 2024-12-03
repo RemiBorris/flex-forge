@@ -1,25 +1,25 @@
-/* Root styles for the NewExercise page */
 
 
-/* Main container for the page */
+
+
 .container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 100vh; /* Full viewport height */
+  height: 100vh; 
   width: 100%;
   margin: 0;
   padding: 50px;
   box-sizing: border-box;
-  background-color: #1e1e1e; /* Dark background */
-  color: #e0e0e0; /* Light text color */
-  font-family: 'Inter', sans-serif; /* Clean font */
-  overflow: hidden; /* Prevent horizontal scrolling */
-  position: relative; /* Ensure child positioning works */
+  background-color: #1e1e1e; 
+  color: #e0e0e0; 
+  font-family: 'Inter', sans-serif;
+  overflow: hidden; 
+  position: relative; 
 }
 
-/* Scrollable content */
+
 .scrollableContent {
   flex: 1;
   display: flex;
@@ -27,13 +27,13 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-y: auto; 
   padding: 20px;
   box-sizing: border-box;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-x: hidden; 
 }
 
-/* Header */
+
 .header {
   font-weight: 700;
   font-size: 3rem;
@@ -43,7 +43,7 @@
   text-shadow: 1px 1px 2px #000;
 }
 
-/* Input field */
+
 .input {
   width: 100%;
   max-width: 600px;
@@ -59,7 +59,7 @@
   box-sizing: border-box;
 }
 
-/* Button styles */
+
 .button {
   width: 100%;
   max-width: 600px;
@@ -78,10 +78,10 @@
 }
 
 .button:hover {
-  background-color: #1565c0; /* Slightly darker blue on hover */
+  background-color: #1565c0; 
 }
 
-/* List container */
+
 .listContainer {
   margin-top: 10px;
   width: 100%;
@@ -90,7 +90,7 @@
   border-radius: 10px;
   padding: 10px;
   overflow-y: auto;
-  max-height: 50vh; /* Prevent the list from taking over the entire screen */
+  max-height: 50vh; 
 }
 
 .listItem {
@@ -111,10 +111,10 @@
 }
 
 .listItem:hover {
-  background-color: #4b4b4b; /* Slightly lighter on hover */
+  background-color: #4b4b4b; 
 }
 
-/* Back button */
+
 .backButton {
   align-self: flex-start;
   background-color: #1e88e5;
