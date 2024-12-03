@@ -265,9 +265,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
                 },
               }}
             />
-            <button className={styles.button} onClick={toggleAllVisibility}>
-              {areAllVisible ? "Hide All Exercises" : "Show All Exercises"}
-            </button>
+            
           </div>
         ) : (
           <p>Loading chart...</p>
