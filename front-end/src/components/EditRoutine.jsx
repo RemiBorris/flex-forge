@@ -210,33 +210,37 @@ const EditRoutine = ({onNavigateToLanding, routine}) => {
   return (
     <div className={styles.container}>
       <button className={styles.backButton} onClick={onNavigateToLanding}>
-        Back to Landing Page
+        Back
       </button>
 
       <div className={styles.scrollableContent}>
-        <h2 className={styles.header}>Edit Routine</h2>
-
-        {routineData ? (
-          <div className={styles.sectionContainer}>
-            <h3>
-              Routine Name{" "}
-              <FaEdit
+        {isEditingRoutineName ? (
+          <div>
+            <input
+            type="text"
+            value={routineName}
+            onChange={handleRoutineNameChange}
+            className={styles.input}
+            />
+            <button
+                onClick={() =>
+                  setIsEditingRoutineName(!isEditingRoutineName)
+                }
+              >Save</button>
+          </div>
+        ) : (
+          <h2 className={styles.header}>{routineName || "No Name"}
+            <FaEdit
                 onClick={() =>
                   setIsEditingRoutineName(!isEditingRoutineName)
                 }
               />
-            </h3>
-            {isEditingRoutineName ? (
-              <input
-                type="text"
-                value={routineName}
-                onChange={(e) => setRoutineName(e.target.value)}
-                className={styles.input}
-              />
-            ) : (
-              <p>{routineName || "No Name"}</p>
-            )}
+          </h2>
+          
+        )}
 
+        {routineData ? (
+          <div className={styles.sectionContainer}>
             <h4>
               Notes{" "}
               <FaEdit

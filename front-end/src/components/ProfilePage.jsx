@@ -143,7 +143,7 @@ const ProfilePage = ({ onNavigateToLanding }) => {
 
   return (
     <div>
-      <button className={styles.button} onClick={handleSave}>Back to Landing Page</button>
+      <button className={styles.button} onClick={handleSave}>Back</button>
 
       {/* Profile Section */}
       <div style={{ marginTop: "20px", textAlign: "center" }}>
