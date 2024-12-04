@@ -90,12 +90,12 @@ const LandingPage = ({
         </button>
 
       <button className="nav-btn" onClick={onNavigateToCalendar}>
-      <CalendarDaysIcon style={{ width: '34px', height: '34px', color: 'white' }} />
+      <CalendarDaysIcon style={{ width: '34px', height: '34px'}} />
 
       </button>
 
       <button className="nav-btn" onClick={onLogout}>
-      <MdLogout style={{ width: '34px', height: '34px', color: 'white' }} />
+      <MdLogout style={{ width: '34px', height: '34px'}} />
       </button>
       </nav>
 
