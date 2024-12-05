@@ -99,7 +99,7 @@ const LandingPage = ({
       </button>
       </nav>
 
-      <h2>{localStorage.userName}'s Routines:</h2>
+      <h2 className="user-name">{localStorage.userName}'s Routines:</h2>
       <ul className="routines-list">
         {routines.map((routine) => (
           <li key={routine.id}>
@@ -119,7 +119,7 @@ const LandingPage = ({
       <button className="landing-btn" onClick={onNavigateToNewRoutine}>
       <PlusCircleIcon style={{ width: '44px', height: '44px', color: 'white' }} />
       </button>
-      <button className="landing-btn" onClick={onNavigateToNewExercise}>Create New Exercise</button>
+      <button className="landing-btn" onClick={onNavigateToNewExercise}>Search New Exercise</button>
     </div>
   );
 };
