@@ -56,7 +56,7 @@ const LandingPage = ({
         date: date, // Use the selected date
       });
       const scheduledWorkout = response.data; // Get the newly created workout
-      alert(`Routine "${routine.routine_name}" scheduled for ${date}!`);
+      // alert(`Routine "${routine.routine_name}" scheduled for ${date}!`);
       
       // Navigate to the WorkoutDetails view with the scheduled workout
       onNavigateToWorkoutDetails(scheduledWorkout);

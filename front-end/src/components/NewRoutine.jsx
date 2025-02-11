@@ -85,7 +85,7 @@ const NewRoutine = ({onNavigateToLanding}) =>{
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/${userId}/workouts/create_routine`, payload);
       (console.log(response.data))
-      alert('Routine created successfully!');
+      // alert('Routine created successfully!');
       onNavigateToLanding();
     } catch (error) {
       console.error('Error creating routine:', error);

@@ -112,7 +112,7 @@ const EditRoutine = ({onNavigateToLanding, routine}) => {
         payload
       )
       .then(() => {
-        alert('Routine updated successfully!');
+        // alert('Routine updated successfully!');
         onNavigateToLanding();
       }
       )
@@ -129,7 +129,7 @@ const EditRoutine = ({onNavigateToLanding, routine}) => {
           `${process.env.REACT_APP_API_URL}/users/${localStorage.userId}/workouts/${routineData.id}`
         )
         .then(() => {
-          alert('Routine deleted successfully!');
+          // alert('Routine deleted successfully!');
           onNavigateToLanding();
         })
         .catch((error) => {

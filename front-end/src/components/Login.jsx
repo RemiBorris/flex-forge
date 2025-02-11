@@ -22,7 +22,7 @@ const Login = ({ onLogin }) => {
         localStorage.setItem('userAvatar', user.avatar);
         //on login, navigate to landing page
         onLogin(user.id)
-        alert(`Welcome, ${user.name}! Your User ID is: ${user.id}`);
+        // alert(`Welcome, ${user.name}! Your User ID is: ${user.id}`);
       } else {
         // No matching user found
         alert('Invalid Email!');
